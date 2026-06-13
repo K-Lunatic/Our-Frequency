@@ -14,21 +14,22 @@ export default function NarrativeSection({ narratives }: Props) {
         </p>
       </div>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+      <section className="flex flex-col gap-4 w-full">
         {narratives.map((chapter, index) => (
           <motion.article
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 + index * 0.1 }}
             key={chapter.id}
-            className="surface-card flex flex-col h-full"
+            className="surface-card w-full flex flex-col text-left"
           >
             <h3 className="text-subtitle mb-3">{chapter.subtitle}</h3>
 
-            <h4 className="text-[1.05rem] font-bold text-stone-800 mb-2 leading-snug">
+            <h4 className="text-[1.05rem] font-bold text-stone-800 mb-2 leading-snug break-keep">
               {chapter.content.split("\n")[0]}
             </h4>
-            <p className="text-[13px] text-stone-600 leading-relaxed whitespace-pre-line flex-1">
+            
+            <p className="text-[13.5px] text-stone-600 leading-relaxed whitespace-pre-line break-keep font-medium">
               {chapter.content.split("\n").slice(1).join("\n").trim()}
             </p>
           </motion.article>

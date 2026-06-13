@@ -44,9 +44,11 @@ export default function QuestionCard({
           Question {String(currentStep + 1).padStart(2, "0")} / {totalSteps}
         </span>
 
-        <h2 className="text-hero mt-5 text-[1.35rem] md:text-2xl leading-relaxed font-extrabold text-stone-800 break-keep px-2">
-          {question.text}
-        </h2>
+        <div className="w-full min-h-[84px] md:min-h-[96px] flex items-center justify-center mt-5 px-2">
+          <h2 className="text-hero text-[1.35rem] md:text-2xl leading-relaxed font-extrabold text-stone-800 break-keep">
+            {question.text}
+          </h2>
+        </div>
       </article>
 
       <nav className="w-full flex flex-col gap-2.5">
