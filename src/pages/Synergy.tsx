@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Info, Zap } from "lucide-react";
+import { ChevronLeft, Info } from "lucide-react";
 import WaveCanvas from "@/shared/visual/WaveCanvas";
 import SynergyEmptyState from "@/features/synergy/components/SynergyEmptyState";
 import SynergyReport from "@/features/synergy/components/SynergyReport";
