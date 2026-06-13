@@ -63,7 +63,7 @@ export function analyzeTenGods(pillars: string[]) {
     { key: "yearBranch", char: pillars[0][1] },
     { key: "monthStem", char: pillars[1][0] },
     { key: "monthBranch", char: pillars[1][1] },
-    { key: "dayStem", char: pillars[2][0] }, // 일간
+    { key: "dayStem", char: pillars[2][0] },
     { key: "dayBranch", char: pillars[2][1] },
     { key: "hourStem", char: pillars[3][0] },
     { key: "hourBranch", char: pillars[3][1] }

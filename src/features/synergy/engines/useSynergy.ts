@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useHexCompress } from '@/shared/hooks/useHexCompress';
 import { calculateElementalSynergy, calculatePerfectSajuOrigin } from '@/shared/utils/destinyEngine';
@@ -26,7 +26,6 @@ export function useSynergy() {
   const [developerMode, setDeveloperMode] = useState(false);
   const [clickCount, setClickCount] = useState(0);
 
-  // 내 파동 데이터 연산
   const myCode = useMemo(() => localStorage.getItem('user_frequency_code'), []);
   const myScores = useMemo(() => myCode ? getElementScores(decompress(myCode)) : null, [myCode, decompress, getElementScores]);
   const isMyYangPolarity = useMemo(() => myScores ? (myScores.wood + myScores.fire) >= (myScores.metal + myScores.water) : true, [myScores]);
@@ -62,7 +61,6 @@ export function useSynergy() {
   }, [synergyData, syncRate]);
 
   const masterDebugData = useMemo(() => {
-    // ... 기존 masterDebugData 로직 유지 ...
     if (!isMatched || !typingCode || !activePartnerScores || !partnerParsedSaju || !myParsedSaju || !synergyData) return null;
     const formatScores = (s: any) => `木${s.wood} 火${s.fire} 土${s.earth} 金${s.metal} 水${s.water}`;
     const getSafeYinYang = (saju: any) => `${saju?.analytics.elements.yinYang?.['+'] ?? 0} : ${saju?.analytics.elements.yinYang?.['-'] ?? 0}`;

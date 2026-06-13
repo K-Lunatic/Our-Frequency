@@ -15,7 +15,6 @@ export function useResult() {
   const [isExporting, setIsExporting] = useState(false);
   const [stageSize, setStageSize] = useState({ w: 300, h: 200 }); 
   
-  // 1. 캔버스 사이즈 계산 로직
   useEffect(() => {
     const calculateSize = () => {
       const isDesktop = window.innerWidth >= 1024;
@@ -29,7 +28,6 @@ export function useResult() {
     return () => window.removeEventListener('resize', calculateSize);
   }, []);
 
-  // 2. 유저 데이터 파싱
   const userCode = useMemo(() => location.state?.userCode || localStorage.getItem('user_frequency_code'), [location.state]);
   
   useEffect(() => { 
@@ -41,7 +39,6 @@ export function useResult() {
     return getElementScores(decompress(userCode));
   }, [userCode, decompress, getElementScores]);
 
-  // 3. 엔진 구동 (사주 & 통변)
   const originData = useMemo(() => userCode && scores ? calculatePerfectSajuOrigin(scores) : null, [userCode, scores]);
   const { persona, narratives } = useMemo(() => originData?.analysis ? generateMoonlightNarrative(originData.analysis) : { persona: null, narratives: null }, [originData]);
 
@@ -57,7 +54,6 @@ export function useResult() {
     ];
   }, [originData]);
 
-  // 4. 액션 핸들러
   const handleSaveImage = async () => {
     if (!captureRef.current) return;
     setIsExporting(true); 

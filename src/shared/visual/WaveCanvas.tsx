@@ -1,4 +1,3 @@
-// src/components/wave/WaveCanvas.tsx
 import { useEffect, useRef, memo } from 'react';
 
 interface WaveProps {

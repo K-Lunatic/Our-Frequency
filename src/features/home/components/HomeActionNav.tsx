@@ -14,7 +14,6 @@ export default function HomeActionNav({ hasCode }: Props) {
           <button onClick={() => navigate('/result')} className="btn-primary">
             내 마음 확인하기
           </button>
-          {/* 💡 기존 디자인의 넉넉한 간격(mt-2)과 그리드 갭 복구 */}
           <div className="grid grid-cols-2 gap-2 mt-2">
             <button onClick={() => navigate('/test')} className="btn-secondary">
               다시 테스트

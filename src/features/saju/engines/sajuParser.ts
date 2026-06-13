@@ -1,5 +1,3 @@
-// src/utils/analyzers/sajuParser.ts
-
 import { analyzeElements } from './elementAnalyzer';
 import { analyzeTenGods } from './tenGodsAnalyzer';
 import { analyzeSpecialStars } from './specialStarsAnalyzer';

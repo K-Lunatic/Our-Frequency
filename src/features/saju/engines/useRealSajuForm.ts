@@ -12,8 +12,6 @@ export function useRealSajuForm() {
   const [birthDate, setBirthDate] = useState('2000-01-01');
   const [birthTime, setBirthTime] = useState('12:00');
   const [isMale, setIsMale] = useState(true);
-  
-  // 💡 불필요한 isProcessing 상태 삭제
 
   const handleCalculate = () => {
     try {
@@ -51,7 +49,6 @@ export function useRealSajuForm() {
       scoreObj.action = (ts['비견'] || 0) + (ts['겁재'] || 0) + (ts['식신'] || 0) + (ts['상관'] || 0) + (ts['편관'] || 0);
       scoreObj.receptivity = (ts['정인'] || 0) + (ts['편인'] || 0) + (ts['정관'] || 0) + (ts['정재'] || 0);
 
-      // 💡 setTimeout 없이 즉시 인코딩 후 라우팅
       const hexCode = encodeSajuToDynamicHex(scoreObj, compress);
       localStorage.setItem('user_frequency_code', hexCode);
       navigate('/result', { state: { userCode: hexCode }, replace: true });

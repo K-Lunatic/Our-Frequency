@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import HeroCanvas from "@/features/home/components/HeroCanvas";
 import HomeActionNav from "@/features/home/components/HomeActionNav";
