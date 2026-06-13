@@ -40,49 +40,83 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
-App.tsx
-assets/hero.png
-assets/react.svg
-assets/vite.svg
-components/AppLayout.tsx
-data/moonlight_db.json
-hooks/useHexCompress.ts
-main.tsx
+app/App.tsx
+app/index.css
+app/main.tsx
+features/home/components/HeroCanvas.tsx
+features/home/components/HomeActionNav.tsx
+features/result/components/CoreAnalyticsBento.tsx
+features/result/components/NarrativeSection.tsx
+features/result/components/ResultActionFooter.tsx
+features/result/components/ResultHeroSection.tsx
+features/result/components/SpecialStarSection.tsx
+features/result/engines/tongbyeonEngine.ts
+features/result/engines/useResult.ts
+features/saju/components/RealSajuInputForm.tsx
+features/saju/engines/elementAnalyzer.ts
+features/saju/engines/fortuneAnalyzer.ts
+features/saju/engines/sajuParser.ts
+features/saju/engines/specialStarsAnalyzer.ts
+features/saju/engines/tenGodsAnalyzer.ts
+features/saju/engines/useRealSajuForm.ts
+features/synergy/components/SynergyDebugPanel.tsx
+features/synergy/components/SynergyEmptyState.tsx
+features/synergy/components/SynergyInputBox.tsx
+features/synergy/components/SynergyReport.tsx
+features/synergy/components/SynergyScoreBox.tsx
+features/synergy/engines/synergyAnalyzer.ts
+features/synergy/engines/useSynergy.ts
+features/test/components/QuestionCard.tsx
+features/test/components/TestProgressBar.tsx
+features/test/engines/reverseEngine.ts
+features/test/engines/useTestProgress.ts
 pages/Home.tsx
 pages/RealSaju.tsx
 pages/Result.tsx
-pages/Sync.tsx
 pages/Synergy.tsx
 pages/Test.tsx
-types/global.d.ts
-utils/reverseEngine.ts
-utils/tongbyeonEngine.ts
+shared/data/questions_db.json
+shared/data/synergy_db.json
+shared/data/tongbyeon_db.json
+shared/hooks/useHexCompress.ts
+shared/types/global.d.ts
+shared/ui/Button.tsx
+shared/utils/astronomyEngine.ts
+shared/utils/destinyEngine.ts
+shared/utils/geoUtils.ts
+shared/visual/RadarChart.tsx
+shared/visual/WaveCanvas.tsx
 </directory_structure>
 
 <files>
 This section contains the contents of the repository's files.
 
-<file path="App.tsx">
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from '@/pages/Home';
-import Test from '@/pages/Test';
-import Result from '@/pages/Result';
-import Synergy from '@/pages/Synergy';
-import RealSaju from '@/pages/RealSaju';
-import Sync from '@/pages/Sync';
-import AppLayout from './components/AppLayout';
+<file path="app/App.tsx">
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import Home from "@/pages/Home";
+import Test from "@/pages/Test";
+import Result from "@/pages/Result";
+import Synergy from "@/pages/Synergy";
+import RealSaju from "@/pages/RealSaju";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<AppLayout />}>
+        <Route
+          element={
+            <div className="relative min-h-screen bg-[#FCF9F2] text-stone-800 overflow-x-hidden font-suit">
+              <div className="relative z-10">
+                <Outlet />
+              </div>
+            </div>
+          }
+        >
           <Route path="/" element={<Home />} />
           <Route path="/test" element={<Test />} />
           <Route path="/result" element={<Result />} />
           <Route path="/synergy" element={<Synergy />} />
           <Route path="/realsaju" element={<RealSaju />} />
-          <Route path="/sync" element={<Sync />} />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -90,33 +124,2801 @@ export default function App() {
 }
 </file>
 
-<file path="assets/react.svg">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+<file path="app/index.css">
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('/fonts/SUIT-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+}
+
+:root {
+  --color-bg: #FCFBFA;
+  --font-suit: 'SUIT', sans-serif;
+  --font-space: 'Space Grotesk', sans-serif;
+}
+
+@layer base {
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background-color: var(--color-bg); 
+    color: #292524;
+    font-family: var(--font-suit);
+    overscroll-behavior-y: none; 
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  #root {
+    width: 100%; min-height: 100dvh;
+    display: flex; flex-direction: column;
+  }
+}
+
+@layer components {
+
+  .layout-page {@apply fixed inset-0 w-full h-[100dvh] bg-[#FCFBFA] flex flex-col items-center overflow-x-hidden text-stone-800 select-none relative;}
+  
+  /* 💡 .flex-center 자체는 .tsx 파일들에서 바로 호출해 쓸 수 있도록 그대로 유지합니다. */
+  .flex-center {@apply flex items-center justify-center;}
+
+  .surface-card {@apply bg-white border border-stone-200/60 rounded-2xl lg:rounded-[1.5rem] p-5 lg:p-6 shadow-sm flex flex-col transition-all;}
+  .surface-glass {@apply bg-white/80 backdrop-blur-xl border border-stone-200/60 shadow-sm rounded-2xl;}
+  .surface-input {@apply bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-200 transition-all;}
+
+  .decor-moon-bg {@apply fixed top-[-10%] right-[-5%] w-[700px] h-[700px] bg-amber-100/30 rounded-full blur-[140px] pointer-events-none z-0;}
+  .decor-stone-bg {@apply fixed bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-stone-200/40 rounded-[40%_60%_70%_30%] blur-[130px] pointer-events-none z-0;}
+
+  .btn-primary {
+    @apply w-full h-12 rounded-full font-bold text-sm flex items-center justify-center transition-all active:scale-[0.98] disabled:opacity-40 bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/20;
+  }
+  
+  .btn-secondary {
+    @apply w-full h-12 rounded-full font-bold text-sm flex items-center justify-center transition-all active:scale-[0.98] disabled:opacity-40 bg-white hover:bg-stone-50 text-stone-700 border border-stone-200 shadow-sm;
+  }
+  
+  /* 💡 해결 포인트: 구형 flex-center 커스텀 상속을 제거하고 코어 스펙(flex items-center justify-center)을 직접 주입했습니다. */
+  .btn-icon {
+    @apply w-10 h-10 rounded-full bg-white/80 backdrop-blur-md border border-stone-200 flex items-center justify-center text-stone-500 hover:text-stone-800 hover:bg-white shadow-sm transition-all;
+  }
+
+  .text-hero {
+    @apply text-2xl md:text-3xl font-bold tracking-tight text-stone-800 leading-tight;
+  }
+  .text-subtitle {
+    font-family: var(--font-space);
+    @apply text-[11px] font-bold text-amber-500 uppercase tracking-widest block opacity-90;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+}
 </file>
 
-<file path="assets/vite.svg">
-<svg xmlns="http://www.w3.org/2000/svg" width="77" height="47" fill="none" aria-labelledby="vite-logo-title" viewBox="0 0 77 47"><title id="vite-logo-title">Vite</title><style>.parenthesis{fill:#000}@media (prefers-color-scheme:dark){.parenthesis{fill:#fff}}</style><path fill="#9135ff" d="M40.151 45.71c-.663.844-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.493c-.92 0-1.457-1.04-.92-1.788l7.479-10.471c1.07-1.498 0-3.578-1.842-3.578H15.443c-.92 0-1.456-1.04-.92-1.788l9.696-13.576c.213-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.472c-1.07 1.497 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.087.89 1.83L40.153 45.712z"/><mask id="a" width="48" height="47" x="14" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M40.047 45.71c-.663.843-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.389c-.92 0-1.457-1.04-.92-1.788l7.479-10.472c1.07-1.497 0-3.578-1.842-3.578H15.34c-.92 0-1.456-1.04-.92-1.788l9.696-13.575c.213-.297.556-.474.92-.474H53.93c.92 0 1.456 1.04.92 1.788L47.37 13.03c-1.07 1.498 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.088.89 1.831L40.049 45.712z"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#eee6ff" rx="5.508" ry="14.704" transform="rotate(269.814 20.96 11.29)scale(-1 1)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#eee6ff" rx="10.399" ry="29.851" transform="rotate(89.814 -16.902 -8.275)scale(1 -1)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#8900ff" rx="5.508" ry="30.487" transform="rotate(89.814 -19.197 -7.127)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.928 4.177)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.738 5.52)scale(1 -1)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#eee6ff" rx="14.072" ry="22.078" transform="rotate(93.35 31.245 55.578)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx="14.592" cy="9.743" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(39.51 14.592 9.743)"/></g><g filter="url(#k)"><ellipse cx="61.728" cy="-5.321" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 61.728 -5.32)"/></g><g filter="url(#l)"><ellipse cx="55.618" cy="7.104" fill="#00c2ff" rx="5.971" ry="9.665" transform="rotate(37.892 55.618 7.104)"/></g><g filter="url(#m)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#n)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#o)"><ellipse cx="49.857" cy="30.678" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 49.857 30.678)"/></g><g filter="url(#p)"><ellipse cx="52.623" cy="33.171" fill="#00c2ff" rx="5.971" ry="15.297" transform="rotate(37.892 52.623 33.17)"/></g></g><path d="M6.919 0c-9.198 13.166-9.252 33.575 0 46.789h6.215c-9.25-13.214-9.196-33.623 0-46.789zm62.424 0h-6.215c9.198 13.166 9.252 33.575 0 46.789h6.215c9.25-13.214 9.196-33.623 0-46.789" class="parenthesis"/><defs><filter id="b" width="60.045" height="41.654" x="-5.564" y="16.92" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-40.407" y="-6.762" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-35.435" y="2.801" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-30.84" y="20.8" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-29.307" y="21.949" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="29.961" y="-17.13" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-13.43" y="-22.082" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="34.321" y="-37.644" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="38.847" y="-10.552" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="22.45" y="-1.645" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="32.919" y="11.36" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter></defs></svg>
+<file path="app/main.tsx">
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+import './index.css';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
 </file>
 
-<file path="components/AppLayout.tsx">
-import { Outlet } from 'react-router-dom';
+<file path="features/home/components/HeroCanvas.tsx">
+import { useEffect, useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { useGLTF, Environment, Sphere } from '@react-three/drei';
+import * as THREE from 'three';
 
-export default function AppLayout() {
+function Moon() {
   return (
-    <div className="relative min-h-screen bg-[#FCF9F2] text-stone-800 overflow-x-hidden font-suit">
-      <div className="relative z-10">
-        <Outlet />
-      </div>
+    <Sphere args={[3, 64, 64]} position={[5, 5, -10]}> 
+      <meshStandardMaterial color="#FDE08B" emissive="#FDE08B" emissiveIntensity={0.6} roughness={0.9} />
+    </Sphere>
+  );
+}
+
+function RabbitModel() {
+  const { scene } = useGLTF('/models/rabbit-transformed.glb'); 
+  const groupRef = useRef<THREE.Group>(null);
+  const targetRotation = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      const x = (event.clientX / window.innerWidth) * 2 - 1;
+      const y = -(event.clientY / window.innerHeight) * 2 + 1;
+      targetRotation.current.y = x * 1; 
+      targetRotation.current.x = -y * 0.8; 
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  useFrame(() => {
+    if (!groupRef.current) return;
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotation.current.y, 0.05);
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotation.current.x, 0.05);
+  });
+
+  return (
+    <group ref={groupRef}>
+      <primitive object={scene} scale={0.6} position={[0, -0.8, 0]} rotation={[0, -Math.PI / 2, 0]} />
+    </group>
+  );
+}
+
+export default function HeroCanvas() {
+  return (
+    <div className="fixed inset-0 z-0 pointer-events-none">
+      <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 2]}>
+        <ambientLight intensity={2.8} /> 
+        <directionalLight position={[0, 5, 10]} intensity={1.5} color="#FFFFFF" />
+        <directionalLight position={[-5, 0, 5]} intensity={1.0} color="#FDE08B" />
+        <Moon />
+        <RabbitModel />
+        <Environment preset="city" blur={0.5} />
+      </Canvas>
     </div>
   );
 }
 </file>
 
-<file path="data/moonlight_db.json">
-{
-  "version": "4.0.0",
-  "description": "Moonlight Garden 통합 마스터 데이터베이스 (질문지 + 롱폼 통변 + 시너지 공명)",
+<file path="features/home/components/HomeActionNav.tsx">
+import { useNavigate } from 'react-router-dom';
 
+interface Props {
+  hasCode: boolean;
+}
+
+export default function HomeActionNav({ hasCode }: Props) {
+  const navigate = useNavigate();
+
+  return (
+    <nav className="flex flex-col gap-2 w-full">
+      {hasCode ? (
+        <>
+          <button onClick={() => navigate('/result')} className="btn-primary">
+            내 마음 확인하기
+          </button>
+          {/* 💡 기존 디자인의 넉넉한 간격(mt-2)과 그리드 갭 복구 */}
+          <div className="grid grid-cols-2 gap-2 mt-2">
+            <button onClick={() => navigate('/test')} className="btn-secondary">
+              다시 테스트
+            </button>
+            <button onClick={() => navigate('/realsaju')} className="btn-secondary">
+              생년월일로 보기
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <button onClick={() => navigate('/test')} className="btn-primary">
+            성향 테스트 시작하기
+          </button>
+          <button 
+            onClick={() => navigate('/realsaju')} 
+            className="w-full py-2 mt-2 text-xs font-medium text-stone-400 underline underline-offset-4 hover:text-stone-800 transition-colors"
+          >
+            정확한 생년월일시로 확인하기
+          </button>
+        </>
+      )}
+    </nav>
+  );
+}
+</file>
+
+<file path="features/result/components/CoreAnalyticsBento.tsx">
+import { motion } from "framer-motion";
+import WaveCanvas from "@/shared/visual/WaveCanvas";
+import RadarChart from "@/shared/visual/RadarChart";
+
+interface Props {
+  stageSize: { w: number; h: number };
+  scores: any;
+  assembledScores: number[];
+  originData: any;
+  yinRatio: number;
+  yangRatio: number;
+}
+
+export default function CoreAnalyticsBento({
+  stageSize,
+  scores,
+  assembledScores,
+  originData,
+  yinRatio,
+  yangRatio,
+}: Props) {
+  const { elements, tenGods } = originData.analysis.analytics;
+
+  const CORE_STATS = [
+    {
+      id: "dominant",
+      label: "DOMINANT",
+      value: (
+        tenGods.matrix.monthBranch.name ||
+        tenGods.dominant[0]?.name ||
+        "비견"
+      ).split(" ")[0],
+      bg: "bg-amber-50 border-amber-200/60",
+      labelClass: "text-[10px] font-bold text-amber-500 tracking-widest",
+      valClass: "text-lg font-extrabold text-amber-700",
+    },
+    {
+      id: "core",
+      label: "CORE",
+      value: (elements?.distribution?.[0] || { name: "Unknown" }).name.split(
+        " ",
+      )[0],
+      bg: "bg-stone-50 border-stone-200/60",
+      labelClass: "text-[10px] font-bold text-stone-400 tracking-widest",
+      valClass: "text-lg font-extrabold text-stone-700",
+    },
+  ];
+
+  return (
+    <section className="grid grid-cols-4 gap-4 w-full max-w-[650px] mx-auto my-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="surface-card col-span-4 min-h-[220px]"
+      >
+        <div className="flex items-center gap-2 mb-2">
+          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+          <span className="text-subtitle">Frequency Wave</span>
+        </div>
+        <div className="flex-1 w-full flex items-center justify-center overflow-hidden rounded-xl">
+          <WaveCanvas
+            myScores={scores}
+            partnerScores={null}
+            width={stageSize.w}
+            height={stageSize.h}
+          />
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="surface-card col-span-2 min-h-[280px]"
+      >
+        <span className="text-subtitle text-center w-full mb-4">
+          Element Balance
+        </span>
+        <div className="flex-1 w-full flex items-center justify-center">
+          <RadarChart
+            scores={assembledScores}
+            colors={originData.chartData.colors}
+          />
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="surface-card col-span-2 justify-between min-h-[280px]"
+      >
+        <span className="text-subtitle text-center w-full mb-3">
+          Core Analytics
+        </span>
+
+        <div className="flex flex-col gap-2 flex-1">
+          <div className="bg-stone-50 border border-stone-100 rounded-xl p-3 flex flex-col items-center">
+            <div className="text-[10px] font-bold text-stone-400 tracking-widest">
+              HEX PILLARS
+            </div>
+            <div className="w-8 h-[1px] bg-stone-200 my-2" />
+            <div className="flex gap-4 justify-center w-full">
+              {(originData?.pillars || []).map((p: string, i: number) => (
+                <div key={i} className="flex flex-col items-center">
+                  <span className="text-sm font-extrabold text-stone-700">
+                    {p?.[0] ?? "?"}
+                  </span>
+                  <span className="text-[11px] font-medium text-stone-500 mt-0.5">
+                    {p?.[1] ?? "?"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            {CORE_STATS.map((stat) => (
+              <div
+                key={stat.id}
+                className={`rounded-xl p-3 border flex flex-col items-center justify-center ${stat.bg}`}
+              >
+                <div className={stat.labelClass}>{stat.label}</div>
+                <div className={stat.valClass}>{stat.value}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-2 px-1">
+            <div className="flex justify-between text-[10px] font-bold mb-1.5 uppercase tracking-widest">
+              <span className="text-amber-600">YIN {yinRatio}</span>
+              <span className="text-stone-500">YANG {yangRatio}</span>
+            </div>
+            <div className="w-full h-1.5 rounded-full bg-stone-100 flex overflow-hidden">
+              <div
+                style={{
+                  width: `${(yinRatio / (yinRatio + yangRatio)) * 100}%`,
+                }}
+                className="bg-amber-400 h-full transition-all duration-700"
+              />
+              <div
+                style={{
+                  width: `${(yangRatio / (yinRatio + yangRatio)) * 100}%`,
+                }}
+                className="bg-stone-300 h-full transition-all duration-700"
+              />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+</file>
+
+<file path="features/result/components/NarrativeSection.tsx">
+import { motion } from "framer-motion";
+
+interface Props {
+  narratives: { id: string; subtitle: string; content: string }[];
+}
+
+export default function NarrativeSection({ narratives }: Props) {
+  return (
+    <div className="w-full max-w-[650px] mx-auto my-12 z-10 relative">
+      <div className="text-center mb-8">
+        <h2 className="text-hero mb-2">당신의 이야기</h2>
+        <p className="text-[13px] font-medium text-stone-500">
+          밤하늘에 쓰여진 내면의 기록
+        </p>
+      </div>
+
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+        {narratives.map((chapter, index) => (
+          <motion.article
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 + index * 0.1 }}
+            key={chapter.id}
+            className="surface-card flex flex-col h-full"
+          >
+            <h3 className="text-subtitle mb-3">{chapter.subtitle}</h3>
+
+            <h4 className="text-[1.05rem] font-bold text-stone-800 mb-2 leading-snug">
+              {chapter.content.split("\n")[0]}
+            </h4>
+            <p className="text-[13px] text-stone-600 leading-relaxed whitespace-pre-line flex-1">
+              {chapter.content.split("\n").slice(1).join("\n").trim()}
+            </p>
+          </motion.article>
+        ))}
+      </section>
+    </div>
+  );
+}
+</file>
+
+<file path="features/result/components/ResultActionFooter.tsx">
+import { Download, Share2, Heart } from "lucide-react";
+
+interface Props {
+  isExporting: boolean;
+  onSave: () => void;
+  onShare: () => void;
+  onSynergy: () => void;
+}
+
+export default function ResultActionFooter({
+  isExporting,
+  onSave,
+  onShare,
+  onSynergy,
+}: Props) {
+  const ACTION_BUTTONS = [
+    {
+      id: "save",
+      label: isExporting ? "저장 중..." : "결과 저장하기",
+      icon: Download,
+      onClick: onSave,
+      disabled: isExporting,
+      btnClass: "btn-primary",
+      iconClass: "w-4 h-4 mr-2",
+    },
+    {
+      id: "share",
+      label: "공유하기",
+      icon: Share2,
+      onClick: onShare,
+      btnClass: "btn-secondary",
+      iconClass: "w-4 h-4 mr-2 text-stone-500",
+    },
+    {
+      id: "synergy",
+      label: "궁합 보기",
+      icon: Heart,
+      onClick: onSynergy,
+      btnClass: "btn-secondary",
+      iconClass: "w-4 h-4 mr-2 text-rose-400",
+    },
+  ];
+
+  return (
+    <footer className="fixed bottom-0 inset-x-0 bg-white/70 backdrop-blur-lg border-t border-stone-200/60 p-4 z-30 flex justify-center">
+      <div className="w-full max-w-[650px]">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
+          {ACTION_BUTTONS.map((btn) => (
+            <button
+              key={btn.id}
+              onClick={btn.onClick}
+              disabled={btn.disabled}
+              className={btn.btnClass}
+            >
+              <btn.icon className={btn.iconClass} />
+              {btn.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+</file>
+
+<file path="features/result/components/ResultHeroSection.tsx">
+import { motion } from 'framer-motion';
+import { MoonStar } from 'lucide-react';
+
+const TAG_STYLES = [
+  "bg-amber-50 text-amber-700 border-amber-200/60 shadow-sm",
+  "bg-stone-50 text-stone-600 border-stone-200/60 shadow-sm",
+  "bg-orange-50 text-orange-700 border-orange-200/60 shadow-sm"
+];
+
+interface Props {
+  persona: { title: string; tags: string[] };
+}
+
+export default function ResultHeroSection({ persona }: Props) {
+  return (
+    <section className="w-full text-center flex flex-col items-center mb-8 relative">
+      <motion.div 
+        initial={{ scale: 0.8, opacity: 0 }} 
+        animate={{ scale: 1, opacity: 1 }} 
+        transition={{ duration: 0.6 }} 
+        className="relative w-16 h-16 flex items-center justify-center mb-5"
+      >
+        <div className="absolute inset-0 bg-amber-200/30 rounded-full blur-xl scale-125 animate-pulse" />
+        <div className="w-full h-full rounded-full bg-amber-50 border border-amber-200/50 flex items-center justify-center shadow-inner relative z-10">
+          <MoonStar className="w-7 h-7 text-amber-500 fill-amber-500/10" strokeWidth={1.5} />
+        </div>
+      </motion.div>
+      
+      <motion.h2 
+        initial={{ y: 20, opacity: 0 }} 
+        animate={{ y: 0, opacity: 1 }} 
+        transition={{ delay: 0.2 }} 
+        className="text-hero px-2"
+      >
+        {persona.title.split('\n').map((line, i) => (
+          <span key={i} className="block">{line}</span>
+        ))}
+      </motion.h2>
+      
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }} 
+        animate={{ y: 0, opacity: 1 }} 
+        transition={{ delay: 0.3 }} 
+        className="flex flex-wrap gap-2 justify-center mt-5"
+      >
+        {persona.tags.map((tag, i) => (
+          <span 
+            key={i} 
+            className={`text-[11px] font-bold px-3 py-1 rounded-full border tracking-wide transition-all duration-300 ${TAG_STYLES[i % 3]}`}
+          >
+            {tag}
+          </span>
+        ))}
+      </motion.div>
+    </section>
+  );
+}
+</file>
+
+<file path="features/result/components/SpecialStarSection.tsx">
+import { motion } from 'framer-motion';
+import { Moon, Wind, Mountain, Leaf, Sun, Sparkles, Star } from 'lucide-react';
+
+const getStarIcon = (name: string) => {
+  if (name.includes('도화')) return Moon;
+  if (name.includes('역마')) return Wind;
+  if (name.includes('화개')) return Mountain;
+  if (name.includes('괴강') || name.includes('백호')) return Leaf;
+  if (name.includes('천을')) return Sun;
+  return Sparkles;
+};
+
+interface Props {
+  specialStars: any[];
+}
+
+export default function SpecialStarSection({ specialStars }: Props) {
+  return (
+    <div className="w-full max-w-[650px] mx-auto my-12 z-10 relative">
+      
+      <div className="text-center mb-8">
+        <h2 className="text-hero mb-2">달빛이 깃든 신호</h2>
+        <p className="text-[13px] font-medium text-stone-500">삶을 이끄는 포근한 운명의 에너지</p>
+      </div>
+
+      <section className="w-full">
+        {specialStars && specialStars.length > 0 ? (
+          <div className={`grid gap-4 w-full ${specialStars.length === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}>
+            {specialStars.map((star: any, idx: number) => {
+              const Icon = getStarIcon(star.name);
+              const isSingle = specialStars.length === 1;
+              
+              return (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  transition={{ delay: 0.9 + (idx * 0.1) }} 
+                  key={idx} 
+                  className={`bg-white border border-stone-200/60 rounded-2xl lg:rounded-[1.5rem] p-5 lg:p-6 shadow-sm flex ${
+                    isSingle ? 'flex-row items-start gap-5' : 'flex-col items-center sm:items-start gap-4'
+                  }`}
+                >
+                  <div className={`flex items-center justify-center shrink-0 rounded-full bg-amber-50 border border-amber-200/40 ${isSingle ? 'w-14 h-14 mt-1' : 'w-12 h-12'}`}>
+                    <Icon className={`text-amber-500 fill-amber-500/10 ${isSingle ? 'w-6 h-6' : 'w-5 h-5'}`} />
+                  </div>
+
+                  <div className={`flex-1 flex flex-col ${isSingle ? 'justify-start' : 'items-center sm:items-start text-center sm:text-left'}`}>
+                    <div className={`flex flex-wrap items-center gap-2 mb-2 ${isSingle ? '' : 'justify-center sm:justify-start'}`}>
+                      <h4 className="text-[15px] font-extrabold text-stone-800">{star.name}</h4>
+                      <span className="text-[10px] font-bold text-amber-600 bg-amber-50 border border-amber-200/30 px-1.5 py-0.5 rounded-md tracking-wide uppercase">
+                        {star.keywords}
+                      </span>
+                    </div>
+                    <p className="text-[13px] text-stone-600 leading-relaxed">
+                      {star.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+        ) : (
+          <div className="bg-white border border-stone-200/60 rounded-2xl p-12 flex flex-col items-center justify-center text-center border-dashed bg-stone-50/40 shadow-none">
+            <Star className="w-7 h-7 text-stone-300 mb-2 animate-pulse" />
+            <p className="text-[13px] text-stone-400 font-medium leading-relaxed">
+              특별한 살(殺)의 간섭 없이 맑고 고요한 궤도를 유지하고 있습니다.
+            </p>
+          </div>
+        )}
+      </section>
+      
+    </div>
+  );
+}
+</file>
+
+<file path="features/result/engines/tongbyeonEngine.ts">
+import masterDB from '@/shared/data/tongbyeon_db.json';
+
+const db = masterDB.advanced;
+
+export function generateMoonlightNarrative(analysis: SajuAnalysis) {
+  const { pillars, analytics } = analysis;
+  const dayPillar = pillars[2];
+  const dayMaster = pillars[2][0];
+
+  const coreData = (db["1_day_pillar_theory"][dayPillar as keyof typeof db["1_day_pillar_theory"]] as { title: string; core: string }) || 
+                   { title: "신비로운 궤적의 달빛", core: "당신의 내면에는 고요하지만 강력한 주파수가 흐르고 있습니다." };
+
+  const dominantSipsung = getDominantSipsung(analytics.tenGods.summary);
+  const monthPillarDB = db["3_positional_analysis"]["month_pillar"];
+  const weaponData = (monthPillarDB[dominantSipsung as keyof typeof monthPillarDB] as { title: string; text: string }) || 
+                     { title: "균형 잡힌 궤도", text: "상황을 객관적으로 바라보고 묵묵히 자신의 자리를 지켜냅니다." };
+
+  let solutionText = "";
+  const syndrome = checkElementalSyndrome(dayMaster, analytics.elements.distribution);
+  
+  if (syndrome && db["4_elemental_syndrome"][syndrome as keyof typeof db["4_elemental_syndrome"]]) {
+    const syndromeData = db["4_elemental_syndrome"][syndrome as keyof typeof db["4_elemental_syndrome"]] as { condition: string; symptom: string; prescription: string };
+    solutionText = `${syndromeData.symptom}\n\n${syndromeData.prescription}`;
+  } else {
+    const seasonKey = getSeasonalKey(dayMaster, pillars[1][1]);
+    const seasonData = db["2_seasonal_environment"][seasonKey as keyof typeof db["2_seasonal_environment"]] as { title: string; text: string };
+    solutionText = seasonData?.text || 
+                   "지금 당신이 가진 고유한 파동을 믿고 그대로 나아가세요. 억지로 궤도를 바꿀 필요 없는 완벽한 균형 상태입니다.";
+  }
+
+  return {
+    persona: {
+      icon: "🌙",
+      title: coreData.title,
+      tags: [`#${coreData.title.split(' ')[0]}`, `#${dominantSipsung}`, `#나만의궤도`] 
+    },
+    narratives: [
+      { id: 'chapter1', subtitle: "Chapter I. 나의 본질", content: coreData.core },
+      { id: 'chapter2', subtitle: "Chapter II. 일과 관계", content: weaponData.text },
+      { id: 'chapter3', subtitle: "Chapter III. 지금 필요한 궤적", content: solutionText }
+    ]
+  };
+}
+
+export function generateDetailedReport(analysis: SajuAnalysis): TarotCard[] {
+  const cards: TarotCard[] = [];
+  const { pillars, analytics } = analysis;
+  const dayPillar = pillars[2]; 
+  const dayMaster = pillars[2][0];
+
+  const iljuData = db["1_day_pillar_theory"][dayPillar as keyof typeof db["1_day_pillar_theory"]] as { title: string; core: string };
+  if (iljuData && iljuData.core) {
+    cards.push({ id: 'core', title: '나의 고유한 달빛', symbol: '🌙', summary: iljuData.title, detail: iljuData.core });
+  }
+
+  const seasonalKey = getSeasonalKey(dayMaster, pillars[1][1]);
+  const seasonalData = db["2_seasonal_environment"][seasonalKey as keyof typeof db["2_seasonal_environment"]] as { title: string; text: string };
+  if (seasonalData && seasonalData.text) {
+    cards.push({ id: 'environment', title: '기운이 피어난 계절', symbol: '🌬️', summary: seasonalData.title, detail: seasonalData.text });
+  }
+
+  const monthStemGod = analytics.tenGods.matrix.monthStem?.name.split(' ')[0] || "비견";
+  const monthGung = db["3_positional_analysis"]["month_pillar"][monthStemGod as keyof typeof db["3_positional_analysis"]["month_pillar"]] as { title: string; text: string };
+  if (monthGung && monthGung.text) {
+    cards.push({ id: 'career', title: '세상과 만나는 방식', symbol: '✨', summary: monthGung.title, detail: monthGung.text });
+  }
+
+  const dayBranchGod = analytics.tenGods.matrix.dayBranch?.name.split(' ')[0] || "비견";
+  const dayGung = db["3_positional_analysis"]["day_branch"][dayBranchGod as keyof typeof db["3_positional_analysis"]["day_branch"]] as { title: string; text: string };
+  if (dayGung && dayGung.text) {
+    cards.push({ id: 'inner', title: '내면의 고요한 정원', symbol: '🌷', summary: dayGung.title, detail: dayGung.text });
+  }
+
+  const hourStemGod = analytics.tenGods.matrix.hourStem?.name.split(' ')[0] || "비견";
+  const hourGung = db["3_positional_analysis"]["hour_pillar"][hourStemGod as keyof typeof db["3_positional_analysis"]["hour_pillar"]] as { title: string; text: string };
+  if (hourGung && hourGung.text) {
+    cards.push({ id: 'future', title: '미래로 향하는 궤적', symbol: '🧭', summary: hourGung.title, detail: hourGung.text });
+  }
+
+  const lifeStageKey = getLifeStage(dayMaster, pillars[2][1]);
+  const lifeStageData = db["5_twelve_life_stages"][lifeStageKey as keyof typeof db["5_twelve_life_stages"]] as { keyword: string; text: string };
+  if (lifeStageData && lifeStageData.text) {
+    cards.push({ id: 'energy', title: '현재 파동의 흐름', symbol: '🌊', summary: `${lifeStageKey}의 시기`, detail: lifeStageData.text });
+  }
+
+  return cards;
+}
+
+export function parseSynergyText(text: string, syncRate: number, myDom: string, partnerDom: string): string {
+  if (!text) return "";
+  return text
+    .replace(/{syncRate}/g, syncRate.toString())
+    .replace(/{myDom}/g, myDom)
+    .replace(/{partnerDom}/g, partnerDom);
+}
+
+function getDominantSipsung(summary: Record<string, number>): string {
+  if (!summary || Object.keys(summary).length === 0) return "비견";
+  const sorted = Object.entries(summary).sort((a, b) => b[1] - a[1]);
+  return sorted[0][0] || "비견";
+}
+
+function getSeasonalKey(dayMaster: string, monthBranch: string): string {
+  const elementMap: Record<string, string> = { "甲": "wood", "乙": "wood", "丙": "fire", "丁": "fire", "戊": "earth", "己": "earth", "庚": "metal", "辛": "metal", "壬": "water", "癸": "water" };
+  const seasonMap: Record<string, string> = { "寅": "spring", "卯": "spring", "辰": "spring", "巳": "summer", "午": "summer", "未": "summer", "申": "autumn", "酉": "autumn", "戌": "autumn", "亥": "winter", "子": "winter", "丑": "winter" };
+  
+  const element = elementMap[dayMaster] || "wood";
+  const season = seasonMap[monthBranch] || "spring";
+  
+  return `${element}_in_${season}`; 
+}
+
+function checkElementalSyndrome(dayMaster: string, distribution: ElementResult[]): string {
+  const counts: Record<string, number> = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+  distribution.forEach(d => { counts[d.id] = d.count ?? 0; });
+
+  const elementMap: Record<string, string> = { "甲": "wood", "乙": "wood", "丙": "fire", "丁": "fire", "戊": "earth", "己": "earth", "庚": "metal", "辛": "metal", "壬": "water", "癸": "water" };
+  const myElement = elementMap[dayMaster];
+
+  for (const [excessElement, count] of Object.entries(counts)) {
+    if (count >= 4 && excessElement !== myElement) {
+      const syndromeKey = `too_much_${excessElement}_for_${myElement}`;
+      if (db["4_elemental_syndrome"][syndromeKey as keyof typeof db["4_elemental_syndrome"]]) {
+        return syndromeKey;
+      }
+    }
+  }
+  return ""; 
+}
+
+function getLifeStage(dayMaster: string, dayBranch: string): string {
+  const stageMap: Record<string, Record<string, string>> = {
+    "甲": { "亥":"장생", "子":"목욕", "丑":"관대", "寅":"건록", "卯":"제왕", "辰":"쇠", "巳":"병", "午":"사", "未":"묘", "申":"절", "酉":"태", "戌":"양" },
+    "乙": { "午":"장생", "巳":"목욕", "辰":"관대", "卯":"건록", "寅":"제왕", "丑":"쇠", "子":"병", "亥":"사", "戌":"묘", "酉":"절", "申":"태", "未":"양" },
+    "丙": { "寅":"장생", "卯":"목욕", "辰":"관대", "巳":"건록", "午":"제왕", "未":"쇠", "申":"병", "酉":"사", "戌":"묘", "亥":"절", "子":"태", "丑":"양" },
+    "丁": { "酉":"장생", "申":"목욕", "未":"관대", "午":"건록", "巳":"제왕", "辰":"쇠", "卯":"병", "寅":"사", "丑":"묘", "子":"절", "亥":"태", "戌":"양" },
+    "戊": { "寅":"장생", "卯":"목욕", "辰":"관대", "巳":"건록", "午":"제왕", "未":"쇠", "申":"병", "酉":"사", "戌":"묘", "亥":"절", "子":"태", "丑":"양" },
+    "己": { "酉":"장생", "申":"목욕", "未":"관대", "午":"건록", "巳":"제왕", "辰":"쇠", "卯":"병", "寅":"사", "丑":"묘", "子":"절", "亥":"태", "戌":"양" },
+    "庚": { "巳":"장생", "午":"목욕", "未":"관대", "申":"건록", "酉":"제왕", "戌":"쇠", "亥":"병", "子":"사", "丑":"묘", "寅":"절", "卯":"태", "辰":"양" },
+    "辛": { "子":"장생", "亥":"목욕", "戌":"관대", "酉":"건록", "申":"제왕", "未":"쇠", "午":"병", "巳":"사", "辰":"묘", "卯":"절", "寅":"태", "丑":"양" },
+    "壬": { "申":"장생", "酉":"목욕", "戌":"관대", "亥":"건록", "子":"제왕", "丑":"쇠", "寅":"병", "卯":"사", "辰":"묘", "巳":"절", "午":"태", "未":"양" },
+    "癸": { "卯":"장생", "寅":"목욕", "丑":"관대", "子":"건록", "亥":"제왕", "戌":"쇠", "酉":"병", "申":"사", "未":"묘", "午":"절", "巳":"태", "辰":"양" }
+  };
+  return stageMap[dayMaster]?.[dayBranch] || "평지";
+}
+</file>
+
+<file path="features/result/engines/useResult.ts">
+import { useEffect, useMemo, useState, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { domToPng } from 'modern-screenshot';
+
+import { useHexCompress } from '@/shared/hooks/useHexCompress';
+import { calculatePerfectSajuOrigin } from '@/shared/utils/destinyEngine'; 
+import { generateMoonlightNarrative } from '@/features/result/engines/tongbyeonEngine'; 
+
+export function useResult() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { decompress, getElementScores } = useHexCompress();
+  
+  const captureRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const [stageSize, setStageSize] = useState({ w: 300, h: 200 }); 
+  
+  // 1. 캔버스 사이즈 계산 로직
+  useEffect(() => {
+    const calculateSize = () => {
+      const isDesktop = window.innerWidth >= 1024;
+      const isTablet = window.innerWidth >= 768;
+      const maxWidth = isDesktop ? 650 : isTablet ? 380 : window.innerWidth - 80;
+      const maxHeight = isDesktop ? 240 : 180;
+      setStageSize({ w: maxWidth, h: maxHeight });
+    };
+    calculateSize();
+    window.addEventListener('resize', calculateSize);
+    return () => window.removeEventListener('resize', calculateSize);
+  }, []);
+
+  // 2. 유저 데이터 파싱
+  const userCode = useMemo(() => location.state?.userCode || localStorage.getItem('user_frequency_code'), [location.state]);
+  
+  useEffect(() => { 
+    if (!userCode) navigate('/', { replace: true }); 
+  }, [userCode, navigate]);
+
+  const scores: any = useMemo(() => {
+    if (!userCode) return { wood: 0, fire: 0, earth: 0, metal: 0, water: 0, yin: 0, yang: 0, action: 0, receptivity: 0 };
+    return getElementScores(decompress(userCode));
+  }, [userCode, decompress, getElementScores]);
+
+  // 3. 엔진 구동 (사주 & 통변)
+  const originData = useMemo(() => userCode && scores ? calculatePerfectSajuOrigin(scores) : null, [userCode, scores]);
+  const { persona, narratives } = useMemo(() => originData?.analysis ? generateMoonlightNarrative(originData.analysis) : { persona: null, narratives: null }, [originData]);
+
+  const assembledScores = useMemo(() => {
+    if (!originData?.analysis) return [];
+    const { elements: { distribution, yinYang }, tenGods: { summary } } = originData.analysis.analytics;
+    const getCount = (id: string) => distribution.find((e: any) => e.id === id)?.count || 0;
+    return [
+      getCount('wood'), getCount('fire'), getCount('earth'), getCount('metal'), getCount('water'),
+      yinYang?.['-'] || 0, yinYang?.['+'] || 0,
+      (summary['비견']||0) + (summary['식신']||0) + (summary['상관']||0) + (summary['편관']||0),
+      (summary['정인']||0) + (summary['편인']||0) + (summary['정관']||0) + (summary['정재']||0)
+    ];
+  }, [originData]);
+
+  // 4. 액션 핸들러
+  const handleSaveImage = async () => {
+    if (!captureRef.current) return;
+    setIsExporting(true); 
+    try {
+      await document.fonts.ready;
+      const dataUrl = await domToPng(captureRef.current, { scale: 3, backgroundColor: '#FCFBFA', style: { transform: 'scale(1)', margin: '0', padding: '0' } });
+      const link = document.createElement('a'); link.href = dataUrl; link.download = `Moonlight-${userCode}.png`; link.click();
+    } catch (err) { console.error('Image export failed:', err); } finally { setIsExporting(false); }
+  };
+
+  const handleShare = async () => {
+    const shareData = { title: 'Moonlight Garden', text: `나의 달빛 파동은 [${userCode}]야! 너의 본질과 대조해봐 🌙`, url: `${window.location.origin}/synergy?target=${userCode}` };
+    try {
+      if (navigator.share) await navigator.share(shareData);
+      else { await navigator.clipboard.writeText(`${shareData.text} \n${shareData.url}`); alert('공유 링크 복사 완료.'); }
+    } catch (err) { console.error(err); }
+  };
+
+  const yinRatio = originData?.analysis.analytics.elements?.yinYang?.['-'] ?? 0;
+  const yangRatio = originData?.analysis.analytics.elements?.yinYang?.['+'] ?? 0;
+  const specialStars = originData?.analysis.analytics.specialStars ?? [];
+
+  return {
+    navigate, captureRef, isExporting, stageSize,
+    userCode, scores, originData, persona, narratives,
+    assembledScores, yinRatio, yangRatio, specialStars,
+    handleSaveImage, handleShare
+  };
+}
+</file>
+
+<file path="features/saju/components/RealSajuInputForm.tsx">
+import { motion } from "framer-motion";
+
+interface Props {
+  birthDate: string;
+  setBirthDate: (val: string) => void;
+  birthTime: string;
+  setBirthTime: (val: string) => void;
+  isMale: boolean;
+  setIsMale: (val: boolean) => void;
+  onCalculate: () => void;
+}
+
+export default function RealSajuInputForm({
+  birthDate,
+  setBirthDate,
+  birthTime,
+  setBirthTime,
+  isMale,
+  setIsMale,
+  onCalculate,
+}: Props) {
+  return (
+    <motion.div
+      key="input"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="w-full max-w-[360px] z-10"
+    >
+      <header className="text-center mb-6">
+        <span className="text-subtitle mb-2">Master Orbit</span>
+        <h1 className="text-hero">정확한 시공간의 기록</h1>
+      </header>
+
+      <div className="surface-card gap-5 shadow-md">
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-bold text-stone-400 tracking-wider uppercase">
+            01. Gender
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => setIsMale(true)}
+              className={`h-11 rounded-xl text-sm font-semibold transition-all border ${
+                isMale
+                  ? "bg-amber-500 text-white border-amber-500 shadow-sm"
+                  : "bg-stone-50 text-stone-600 border-stone-200 hover:bg-stone-100"
+              }`}
+            >
+              남성
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsMale(false)}
+              className={`h-11 rounded-xl text-sm font-semibold transition-all border ${
+                !isMale
+                  ? "bg-amber-500 text-white border-amber-500 shadow-sm"
+                  : "bg-stone-50 text-stone-600 border-stone-200 hover:bg-stone-100"
+              }`}
+            >
+              여성
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-bold text-stone-400 tracking-wider uppercase">
+            02. Birth Date
+          </label>
+          <input
+            type="date"
+            value={birthDate}
+            onChange={(e) => setBirthDate(e.target.value)}
+            className="surface-input w-full font-medium text-stone-700"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-bold text-stone-400 tracking-wider uppercase">
+            03. Birth Time
+          </label>
+          <input
+            type="time"
+            value={birthTime}
+            onChange={(e) => setBirthTime(e.target.value)}
+            className="surface-input w-full font-medium text-stone-700"
+          />
+        </div>
+
+        <button onClick={onCalculate} className="btn-primary mt-2">
+          Decode
+        </button>
+      </div>
+    </motion.div>
+  );
+}
+</file>
+
+<file path="features/saju/engines/elementAnalyzer.ts">
+const ELEMENT_META: Record<ElementType, Omit<ElementResult, 'count' | 'percentage'>> = {
+  "wood": { id: "wood", name: "푸른 나무", label: "목(Wood)", hanja: "木", color: "#3A5A40", bg: "#F1F4F1", keyword: "성장과 뻗어나감", desc: "위로 솟구치며 자라나는 강한 생명력과 진취적인 호기심" },
+  "fire": { id: "fire", name: "붉은 불꽃", label: "화(Fire)", hanja: "火", color: "#C1121F", bg: "#FDF4F4", keyword: "열정과 발산", desc: "어둠을 밝히고 사방으로 뻗어가는 화려한 에너지와 예의" },
+  "earth": { id: "earth", name: "황금빛 흙", label: "토(Earth)", hanja: "土", color: "#A67C00", bg: "#F9F6F2", keyword: "포용과 신뢰", desc: "만물을 길러내고 중심을 묵묵히 지키는 흔들림 없는 안정감" },
+  "metal": { id: "metal", name: "하얀 쇠", label: "금(Metal)", hanja: "金", color: "#6B7280", bg: "#F5F5F5", keyword: "결단과 원칙", desc: "불순물을 걸러낸 차갑고 예리한 결단력과 변치 않는 의리" },
+  "water": { id: "water", name: "검은 물", label: "수(Water)", hanja: "水", color: "#1D3557", bg: "#F0F4F8", keyword: "유연과 지혜", desc: "어디든 스며드는 유연함과 보이지 않는 심연의 철학적 통찰" }
+};
+
+const CHAR_MAP: Record<string, { element: string, yinYang: string }> = {
+  "甲": { element: "wood", yinYang: "+" }, "乙": { element: "wood", yinYang: "-" },
+  "丙": { element: "fire", yinYang: "+" }, "丁": { element: "fire", yinYang: "-" },
+  "戊": { element: "earth", yinYang: "+" }, "己": { element: "earth", yinYang: "-" },
+  "庚": { element: "metal", yinYang: "+" }, "辛": { element: "metal", yinYang: "-" },
+  "壬": { element: "water", yinYang: "+" }, "癸": { element: "water", yinYang: "-" },
+  "寅": { element: "wood", yinYang: "+" }, "卯": { element: "wood", yinYang: "-" },
+  "巳": { element: "fire", yinYang: "+" }, "午": { element: "fire", yinYang: "-" },
+  "辰": { element: "earth", yinYang: "+" }, "戌": { element: "earth", yinYang: "+" },
+  "丑": { element: "earth", yinYang: "-" }, "未": { element: "earth", yinYang: "-" },
+  "申": { element: "metal", yinYang: "+" }, "酉": { element: "metal", yinYang: "-" },
+  "亥": { element: "water", yinYang: "+" }, "子": { element: "water", yinYang: "-" }
+};
+
+export function analyzeElements(pillars: string[]) {
+  const counts: Record<string, number> = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+  const yinYang = { "+": 0, "-": 0 };
+  
+  const chars = pillars.join('').split('');
+
+  chars.forEach(char => {
+    const data = CHAR_MAP[char];
+    if (data) {
+      counts[data.element]++;
+      yinYang[data.yinYang as "+" | "-"]++;
+    }
+  });
+
+  const distribution: ElementResult[] = (Object.keys(counts) as ElementType[]).map(key => {
+    const count = counts[key];
+    const percentage = Math.round((count / 8) * 100);
+    return {
+      ...ELEMENT_META[key],
+      count,
+      percentage
+    };
+  });
+
+  const lackingElements = distribution.filter(el => (el.count ?? 0) === 0);
+  const dominantElements = distribution.filter(el => (el.count ?? 0) >= 3);
+
+  let energyBalance = "조화로움";
+  if (yinYang["+"] >= 6) energyBalance = "양(陽) 기운 과다 - 외향적이고 추진력이 강하나 성급할 수 있음";
+  if (yinYang["-"] >= 6) energyBalance = "음(陰) 기운 과다 - 내향적이고 수용력이 강하나 우울감에 빠지기 쉬움";
+
+  return {
+    rawCounts: counts, 
+    yinYang,  
+    energyBalance, 
+    distribution,           
+    insights: {
+      dominant: dominantElements, 
+      lacking: lackingElements
+    }
+  };
+}
+</file>
+
+<file path="features/saju/engines/fortuneAnalyzer.ts">
+// src/utils/analyzers/fortuneAnalyzer.ts
+
+const STEMS = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+const BRANCHES = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+
+const ELEMENT_MAP: Record<string, { element: string, yinYang: string }> = {
+  "甲": { element: "wood", yinYang: "+" }, "乙": { element: "wood", yinYang: "-" },
+  "丙": { element: "fire", yinYang: "+" }, "丁": { element: "fire", yinYang: "-" },
+  "戊": { element: "earth", yinYang: "+" }, "己": { element: "earth", yinYang: "-" },
+  "庚": { element: "metal", yinYang: "+" }, "辛": { element: "metal", yinYang: "-" },
+  "壬": { element: "water", yinYang: "+" }, "癸": { element: "water", yinYang: "-" },
+  "寅": { element: "wood", yinYang: "+" }, "卯": { element: "wood", yinYang: "-" },
+  "巳": { element: "fire", yinYang: "+" }, "午": { element: "fire", yinYang: "-" },
+  "辰": { element: "earth", yinYang: "+" }, "戌": { element: "earth", yinYang: "+" },
+  "丑": { element: "earth", yinYang: "-" }, "未": { element: "earth", yinYang: "-" },
+  "申": { element: "metal", yinYang: "+" }, "酉": { element: "metal", yinYang: "-" },
+  "亥": { element: "water", yinYang: "+" }, "子": { element: "water", yinYang: "-" }
+};
+
+const ELEMENT_IDX: Record<string, number> = { "wood": 0, "fire": 1, "earth": 2, "metal": 3, "water": 4 };
+
+const getTenGod = (myStem: string, targetChar: string) => {
+  const me = ELEMENT_MAP[myStem];
+  const target = ELEMENT_MAP[targetChar];
+  if (!me || !target) return "";
+
+  const myIdx = ELEMENT_IDX[me.element];
+  const targetIdx = ELEMENT_IDX[target.element];
+  const isSameYinYang = me.yinYang === target.yinYang;
+  const relation = (targetIdx - myIdx + 5) % 5;
+
+  switch (relation) {
+    case 0: return isSameYinYang ? "비견" : "겁재";
+    case 1: return isSameYinYang ? "식신" : "상관";
+    case 2: return isSameYinYang ? "편재" : "정재";
+    case 3: return isSameYinYang ? "편관" : "정관";
+    case 4: return isSameYinYang ? "편인" : "정인";
+    default: return "";
+  }
+};
+
+export const getYearlyPillar = (year: number) => {
+  const sIdx = (year - 4 + 1000) % 10;
+  const bIdx = (year - 4 + 1200) % 12;
+  return `${STEMS[sIdx]}${BRANCHES[bIdx]}`;
+};
+
+export function analyzeFortune(
+  dayStem: string, 
+  yearStem: string,
+  monthPillar: string,
+  isMale: boolean = true,
+  targetYear: number = new Date().getFullYear()
+) {
+  const yearlyPillar = getYearlyPillar(targetYear);
+  const yearlyTenGodStem = getTenGod(dayStem, yearlyPillar[0]);
+  const yearlyTenGodBranch = getTenGod(dayStem, yearlyPillar[1]);
+  const isYearStemYang = ELEMENT_MAP[yearStem].yinYang === "+";
+  const isForward = (isMale && isYearStemYang) || (!isMale && !isYearStemYang);
+  const daeunPath: Array<{ pillar: string, tenGod: string }> = [];
+  let currentStemIdx = STEMS.indexOf(monthPillar[0]);
+  let currentBranchIdx = BRANCHES.indexOf(monthPillar[1]);
+
+  for (let i = 1; i <= 8; i++) {
+    if (isForward) {
+      currentStemIdx = (currentStemIdx + 1) % 10;
+      currentBranchIdx = (currentBranchIdx + 1) % 12;
+    } else {
+      currentStemIdx = (currentStemIdx - 1 + 10) % 10;
+      currentBranchIdx = (currentBranchIdx - 1 + 12) % 12;
+    }
+    const pillar = `${STEMS[currentStemIdx]}${BRANCHES[currentBranchIdx]}`;
+    daeunPath.push({
+      pillar,
+      tenGod: `${getTenGod(dayStem, pillar[0])}/${getTenGod(dayStem, pillar[1])}`
+    });
+  }
+
+  return {
+    yearly: {
+      year: targetYear,
+      pillar: yearlyPillar,
+      tenGods: [yearlyTenGodStem, yearlyTenGodBranch],
+      desc: `${targetYear}년은 ${yearlyPillar}년으로, 당신에게 ${yearlyTenGodStem}와 ${yearlyTenGodBranch}의 기운이 들어오는 시기입니다.`
+    },
+    daeun: {
+      direction: isForward ? "순행" : "역행",
+      path: daeunPath
+    }
+  };
+}
+</file>
+
+<file path="features/saju/engines/sajuParser.ts">
+// src/utils/analyzers/sajuParser.ts
+
+import { analyzeElements } from './elementAnalyzer';
+import { analyzeTenGods } from './tenGodsAnalyzer';
+import { analyzeSpecialStars } from './specialStarsAnalyzer';
+import { analyzeFortune } from './fortuneAnalyzer';
+import { generateDetailedReport } from '@/features/result/engines/tongbyeonEngine';
+
+export function parseSajuData(
+  pillars: [string, string, string, string],
+  isMale: boolean = true, 
+  targetYear: number = new Date().getFullYear()
+): SajuAnalysis {
+  const yearStem = pillars[0][0];      
+  const monthPillar = pillars[1];      
+  const dayMaster = pillars[2][0];     
+
+  const elementsData = analyzeElements(pillars);
+  const tenGodsData = analyzeTenGods(pillars);
+  const specialStarsData = analyzeSpecialStars(pillars, dayMaster);
+  const fortuneData = analyzeFortune(dayMaster, yearStem, monthPillar, isMale, targetYear);
+
+  const analysisResult: SajuAnalysis = {
+    pillars: pillars,
+    analytics: {
+      elements: elementsData,
+      tenGods: tenGodsData as any, 
+      specialStars: specialStarsData,
+      fortune: fortuneData
+    }
+  };
+  (analysisResult as any).report = generateDetailedReport(analysisResult);
+  return analysisResult;
+}
+</file>
+
+<file path="features/saju/engines/specialStarsAnalyzer.ts">
+const NACHE_DOHWA_PILLARS: readonly string[] = ["甲子", "乙巳", "丁亥", "庚午", "辛亥", "癸酉"];
+const BAEKHO_PILLARS: readonly string[] = ["甲辰", "乙未", "丙戌", "丁丑", "戊辰", "壬戌", "癸丑"];
+const GOEGANG_PILLARS: readonly string[] = ["戊戌", "庚戌", "庚辰", "壬辰"];
+const CHEONEUL_MAP: Record<string, readonly string[]> = {
+  "甲": ["丑", "未"], "戊": ["丑", "未"], "庚": ["丑", "未"],
+  "乙": ["子", "申"], "己": ["子", "申"],
+  "丙": ["亥", "酉"], "丁": ["亥", "酉"],
+  "辛": ["寅", "午"],
+  "壬": ["卯", "巳"], "癸": ["卯", "巳"]
+};
+const RELATION_STAR_MAP: Record<string, { dohwa: string; yeokma: string; hwagae: string }> = {
+  '亥': { dohwa: '子', yeokma: '巳', hwagae: '未' }, '卯': { dohwa: '子', yeokma: '巳', hwagae: '未' }, '未': { dohwa: '子', yeokma: '巳', hwagae: '未' },
+  '寅': { dohwa: '卯', yeokma: '申', hwagae: '戌' }, '午': { dohwa: '卯', yeokma: '申', hwagae: '戌' }, '戌': { dohwa: '卯', yeokma: '申', hwagae: '戌' },
+  '巳': { dohwa: '午', yeokma: '亥', hwagae: '丑' }, '酉': { dohwa: '午', yeokma: '亥', hwagae: '丑' }, '丑': { dohwa: '午', yeokma: '亥', hwagae: '丑' },
+  '申': { dohwa: '酉', yeokma: '寅', hwagae: '辰' }, '子': { dohwa: '酉', yeokma: '寅', hwagae: '辰' }, '辰': { dohwa: '酉', yeokma: '寅', hwagae: '辰' }
+};
+
+export function analyzeSpecialStars(pillars: string[], dayStem: string): SpecialStar[] {
+  const stars: SpecialStar[] = [];
+  const branches = pillars.map(p => p[1]); 
+  const [yB, mB, dB, hB] = branches;
+  const dayPillar = pillars[2]; 
+
+  if (NACHE_DOHWA_PILLARS.includes(dayPillar)) {
+    stars.push({
+      name: "나체도화 (Naked Bloom)",
+      keywords: "#원초적매력 #무장해제 #순수함",
+      desc: "꾸미지 않아도 뿜어져 나오는 원초적인 매력을 타고나셨군요. 마치 갓 씻고 나온 달빛처럼 깨끗하면서도 타인의 마음을 무장해제 시키는 묘한 파동을 지녔습니다. 작위적인 연출보다 당신 본연의 모습이 드러날 때 가장 강력한 유혹의 기운이 발산됩니다. 타인의 시선을 의식하지 않는 당당함이 곧 당신의 가장 치명적인 무기가 됩니다.",
+      matchedPillars: [dayPillar]
+    });
+  }
+
+  const pivotY = RELATION_STAR_MAP[yB];
+  const pivotD = RELATION_STAR_MAP[dB];
+  const isWoljang = (pivotY?.dohwa === mB) || (pivotD?.dohwa === mB);
+  if (isWoljang) {
+    stars.push({
+      name: "월장도화 (Over-the-Wall)",
+      keywords: "#숨길수없는빛 #셀러브리티 #압도적매력",
+      desc: "당신의 매력은 좁은 울타리에 갇혀있을 수 없습니다. 도화의 기운이 담장을 넘어 멀리까지 퍼져나가는 형국이니, 당신이 어디에 있든 세상은 당신을 찾아낼 것입니다. 이는 물리적 거리를 초월하여 타인의 무의식에 당신의 잔상을 남기는 힘입니다. 숨기려 할수록 더욱 선명해지는 아우라를 가졌기에, 대중의 사랑을 받는 아이콘으로서 최적의 조건을 갖추셨습니다.",
+      matchedPillars: [pillars[1]]
+    });
+  }
+
+  const isTrueDohwa = [yB, dB, hB].some(b => b === pivotY?.dohwa || b === pivotD?.dohwa);
+  if (isTrueDohwa && !isWoljang) {
+    stars.push({
+      name: "진도화 (True Bloom)",
+      keywords: "#정석매력 #인기 #주인공의파동",
+      desc: "명리학에서 인정하는 가장 정통적인 도화의 기운을 품고 계십니다. 사람들 사이에서 자연스럽게 시선을 모으는 주인공의 주파수를 타고나셨군요. 당신의 말 한마디와 손짓 하나가 타인에게 긍정적인 자극과 영감을 줍니다. 시대의 흐름을 읽는 본능적인 감각이 탁월하여, 현대 사회에서 자신을 브랜딩하고 타인을 이끄는 데 있어 타의 추종을 불허하는 재능을 발휘합니다."
+    });
+  }
+
+  if (branches.includes(pivotY?.yeokma) || branches.includes(pivotD?.yeokma)) {
+    stars.push({
+      name: "역마살 (Cosmic Traveler)",
+      keywords: "#글로벌에너지 #개척자 #변화무쌍",
+      desc: "당신의 운명은 정체된 고요함보다 역동적인 흐름 속에서 찬란하게 빛납니다. 한 곳에 고여 있기보다 끊임없이 새로운 궤도를 생성하고 탐험할 때 당신의 주파수는 가장 선명하게 공명합니다. 이는 단순한 이동을 넘어, 고정관념을 깨부수고 새로운 가치를 창조하는 혁신가의 기운입니다. 넓은 세상을 무대로 삼아 경계를 허무는 삶이 당신에게 가장 잘 어울립니다."
+    });
+  }
+
+  if (branches.includes(pivotY?.hwagae) || branches.includes(pivotD?.hwagae)) {
+    stars.push({
+      name: "화개살 (Arcane Garden)",
+      keywords: "#예술적천재성 #깊은통찰 #정신적풍요",
+      desc: "화려한 무대의 커튼이 내려온 뒤, 홀로 남은 고요한 시간마저 찬란하게 채우는 깊은 내면의 소유자입니다. 인생의 굴곡과 고독을 예술적 영감이나 깊은 철학적 사유로 승화시키는 비범한 능력을 지녔습니다. 겉으로 드러나는 성공보다 정신적 가치를 지탱하는 힘이 강하며, 시간이 흐를수록 그 깊이가 깊어져 주변 사람들에게 등불과 같은 위안을 주는 존재가 될 것입니다."
+    });
+  }
+
+  const matchedBaekho = pillars.filter(p => BAEKHO_PILLARS.includes(p));
+  if (matchedBaekho.length > 0) {
+    stars.push({
+      name: "백호대살 (White Tiger)",
+      keywords: "#폭발적추진력 #프로의식 #카리스마",
+      desc: "평소에는 온화해 보이지만, 결정적인 위기 상황에서 백호와 같은 폭발적인 카리스마를 뿜어냅니다. 남들이 포기하는 난관도 정면으로 돌파해버리는 무서운 집중력과 결단력의 근원입니다. 전문 분야에서 독보적인 실력을 쌓는 데 유리하며, 한번 마음먹은 일은 반드시 완수해내는 강인한 정신적 궤도를 상징합니다.",
+      matchedPillars: matchedBaekho
+    });
+  }
+
+  const matchedGoegang = pillars.filter(p => GOEGANG_PILLARS.includes(p));
+  if (matchedGoegang.length > 0) {
+    stars.push({
+      name: "괴강살 (Polaris Leadership)",
+      keywords: "#우두머리 #비상한총명함 #독립심",
+      desc: "하늘의 우두머리 별자리와 같은 강한 기운을 타고났습니다. 무리를 이끄는 리더의 기질과 남들이 생각지 못한 비범한 통찰력이 본질에 새겨져 있군요. 타인의 지시를 받기보다 스스로 길을 만들고 통제할 때 그 잠재력이 극대화됩니다. 위엄 있는 카리스마로 주변을 압도하며, 당신만의 왕국을 건설하는 우직한 에너지를 의미합니다.",
+      matchedPillars: matchedGoegang
+    });
+  }
+
+  const cheoneulBranches = CHEONEUL_MAP[dayStem] || [];
+  const matchedCheoneul = branches.filter(b => cheoneulBranches.includes(b));
+  if (matchedCheoneul.length > 0) {
+    stars.push({
+      name: "천을귀인 (Celestial Guardian)",
+      keywords: "#수호신 #인덕 #위기모면",
+      desc: "명리학에서 가장 존귀하고 강력한 길신인 천을귀인의 가호가 함께합니다. 인생의 벼랑 끝에서도 당신을 돕는 귀인이 나타나 흉한 기운을 길하게 바꿔버리는 경이로운 에너지를 지녔습니다. 이는 단순히 운이 좋은 것을 넘어, 당신의 인품과 주파수가 주변의 선한 인연들을 자연스럽게 끌어당기는 '복의 근원'임을 상징합니다. 어떠한 풍파에도 무너지지 않는 든든한 보호막을 품고 계시네요.",
+      matchedPillars: matchedCheoneul
+    });
+  }
+
+  return stars;
+}
+</file>
+
+<file path="features/saju/engines/tenGodsAnalyzer.ts">
+const ELEMENT_MAP: Record<string, { element: string, yinYang: string }> = {
+  "甲": { element: "wood", yinYang: "+" }, "乙": { element: "wood", yinYang: "-" },
+  "丙": { element: "fire", yinYang: "+" }, "丁": { element: "fire", yinYang: "-" },
+  "戊": { element: "earth", yinYang: "+" }, "己": { element: "earth", yinYang: "-" },
+  "庚": { element: "metal", yinYang: "+" }, "辛": { element: "metal", yinYang: "-" },
+  "壬": { element: "water", yinYang: "+" }, "癸": { element: "water", yinYang: "-" },
+  "寅": { element: "wood", yinYang: "+" }, "卯": { element: "wood", yinYang: "-" },
+  "巳": { element: "fire", yinYang: "+" }, "午": { element: "fire", yinYang: "-" },
+  "辰": { element: "earth", yinYang: "+" }, "戌": { element: "earth", yinYang: "+" },
+  "丑": { element: "earth", yinYang: "-" }, "未": { element: "earth", yinYang: "-" },
+  "申": { element: "metal", yinYang: "+" }, "酉": { element: "metal", yinYang: "-" },
+  "亥": { element: "water", yinYang: "+" }, "子": { element: "water", yinYang: "-" }
+};
+
+const TEN_GODS_META: Record<string, TenGod> = {
+  "비견": { name: "비견 (比肩)", keyword: "#주체성 #독립 #친구", desc: "나와 어깨를 나란히 하는 에너지입니다. 자립심이 강하고 타인과 평등한 관계를 추구하며, 경쟁을 통해 성장합니다." },
+  "겁재": { name: "겁재 (劫財)", keyword: "#승부욕 #투쟁 #탈취", desc: "강력한 경쟁심과 쟁취력을 상징합니다. 위기 상황에서 폭발적인 에너지를 발휘하며, 목표를 향한 집념이 대단히 강합니다." },
+  "식신": { name: "식신 (食神)", keyword: "#창의성 #탐구 #의식주", desc: "나의 에너지를 자연스럽게 밖으로 표출하는 성분입니다. 한 분야를 깊게 파고드는 장인정신과 삶의 여유, 미식(의식주)을 의미합니다." },
+  "상관": { name: "상관 (傷官)", keyword: "#표현력 #혁신 #언변", desc: "기존의 틀을 깨고 새로운 것을 창조해내는 혁신적인 기운입니다. 화려한 언변과 순발력, 뛰어난 임기응변을 자랑합니다." },
+  "편재": { name: "편재 (偏財)", keyword: "#네트워킹 #사업 #확장", desc: "내가 통제하고 지배하려는 불특정 다수의 재물입니다. 스케일이 크고 공간 지각력이 뛰어나며, 사업가적 기질과 유흥을 상징합니다." },
+  "정재": { name: "정재 (正財)", keyword: "#안정성 #저축 #치밀함", desc: "정당한 노동을 통해 얻는 예측 가능한 재물입니다. 대단히 꼼꼼하고 치밀하며, 안정적인 자산 관리와 책임감을 의미합니다." },
+  "편관": { name: "편관 (偏官)", keyword: "#카리스마 #권력 #명예", desc: "나를 강하게 통제하는 규칙이자 카리스마입니다. 어려운 난관을 돌파하는 리더십과 권력욕을 상징하지만, 때론 스트레스가 될 수 있습니다." },
+  "정관": { name: "정관 (正官)", keyword: "#원칙 #합리성 #행정", desc: "사회의 보편적인 합리성과 원칙을 의미합니다. 보수적이고 명예를 중시하며, 조직 내에서 신뢰받는 관리자로서의 자질이 뛰어납니다." },
+  "편인": { name: "편인 (偏印)", keyword: "#직관 #전문기술 #철학", desc: "나를 수용하는 기운이되, 조건부로 받아들이는 까다로운 지혜입니다. 눈치가 대단히 빠르고 신비주의, 종교, 철학, 특수 기술에 능합니다." },
+  "정인": { name: "정인 (正印)", keyword: "#수용 #학문 #도덕성", desc: "나를 무조건적으로 생해주는 어머니와 같은 따뜻한 기운입니다. 순수하게 지식을 스펀지처럼 흡수하며 도덕성과 인품이 바릅니다." },
+  "일간": { name: "일간 (나)", keyword: "#본질 #코어", desc: "당신의 영혼을 상징하는 중심 핵입니다." }
+};
+
+const ELEMENT_IDX: Record<string, number> = { "wood": 0, "fire": 1, "earth": 2, "metal": 3, "water": 4 };
+
+const getTenGodName = (myChar: string, targetChar: string): string => {
+  if (myChar === targetChar) return "일간";
+
+  const me = ELEMENT_MAP[myChar];
+  const target = ELEMENT_MAP[targetChar];
+  
+  if (!me || !target) return "";
+
+  const myIdx = ELEMENT_IDX[me.element];
+  const targetIdx = ELEMENT_IDX[target.element];
+  const isSameYinYang = me.yinYang === target.yinYang;
+
+  const relation = (targetIdx - myIdx + 5) % 5;
+
+  switch (relation) {
+    case 0: return isSameYinYang ? "비견" : "겁재";
+    case 1: return isSameYinYang ? "식신" : "상관";
+    case 2: return isSameYinYang ? "편재" : "정재";
+    case 3: return isSameYinYang ? "편관" : "정관";
+    case 4: return isSameYinYang ? "편인" : "정인";
+    default: return "";
+  }
+};
+
+
+export function analyzeTenGods(pillars: string[]) {
+  const dayMaster = pillars[2][0];
+
+  const result: Record<string, TenGod> = {};
+  
+  const positions = [
+    { key: "yearStem", char: pillars[0][0] },
+    { key: "yearBranch", char: pillars[0][1] },
+    { key: "monthStem", char: pillars[1][0] },
+    { key: "monthBranch", char: pillars[1][1] },
+    { key: "dayStem", char: pillars[2][0] }, // 일간
+    { key: "dayBranch", char: pillars[2][1] },
+    { key: "hourStem", char: pillars[3][0] },
+    { key: "hourBranch", char: pillars[3][1] }
+  ];
+
+  const tenGodCounts: Record<string, number> = {};
+
+  positions.forEach(pos => {
+    const godName = getTenGodName(dayMaster, pos.char);
+    result[pos.key] = TEN_GODS_META[godName];
+
+    if (godName !== "일간") {
+      tenGodCounts[godName] = (tenGodCounts[godName] || 0) + 1;
+    }
+  });
+
+  const dominantGods = Object.keys(tenGodCounts)
+    .filter(god => tenGodCounts[god] >= 3)
+    .map(god => TEN_GODS_META[god]);
+
+  return {
+    matrix: result,       
+    summary: tenGodCounts, 
+    dominant: dominantGods   
+  };
+}
+</file>
+
+<file path="features/saju/engines/useRealSajuForm.ts">
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { calculateRealSaju } from '@/shared/utils/destinyEngine';
+import { parseSajuData } from '@/features/saju/engines/sajuParser';
+import { encodeSajuToDynamicHex } from '@/features/test/engines/reverseEngine';
+import { useHexCompress } from '@/shared/hooks/useHexCompress';
+
+export function useRealSajuForm() {
+  const navigate = useNavigate();
+  const { compress } = useHexCompress();
+
+  const [birthDate, setBirthDate] = useState('2000-01-01');
+  const [birthTime, setBirthTime] = useState('12:00');
+  const [isMale, setIsMale] = useState(true);
+  
+  // 💡 불필요한 isProcessing 상태 삭제
+
+  const handleCalculate = () => {
+    try {
+      const [y, m, d] = birthDate.split('-').map(Number);
+      const [h, min] = birthTime.split(':').map(Number);
+      
+      const baseResult = calculateRealSaju(new Date(y, m - 1, d, h, min));
+      const guaranteedPillars = baseResult.pillars as [string, string, string, string];
+      
+      const parsedResult = parseSajuData(guaranteedPillars, isMale, 2026) as any;
+      
+      const scoreObj: any = { 
+        wood: 0, fire: 0, earth: 0, metal: 0, water: 0,
+        yin: 0, yang: 0, action: 0, receptivity: 0 
+      };
+      
+      const elementMap: Record<string, string> = {
+        '甲': 'wood', '乙': 'wood', '寅': 'wood', '卯': 'wood',
+        '丙': 'fire', '丁': 'fire', '巳': 'fire', '午': 'fire',
+        '戊': 'earth', '己': 'earth', '辰': 'earth', '戌': 'earth', '丑': 'earth', '未': 'earth',
+        '庚': 'metal', '辛': 'metal', '申': 'metal', '酉': 'metal',
+        '壬': 'water', '癸': 'water', '亥': 'water', '子': 'water'
+      };
+      
+      baseResult.pillars.join('').split('').forEach((char: string) => {
+        const mappedKey = elementMap[char];
+        if (mappedKey) scoreObj[mappedKey] = (scoreObj[mappedKey] as number) + 1;
+      });
+
+      const yy = parsedResult.analytics.elements.yinYang || { "+": 0, "-": 0 };
+      scoreObj.yang = yy["+"];
+      scoreObj.yin = yy["-"];
+
+      const ts = parsedResult.analytics.tenGods.summary || {}; 
+      scoreObj.action = (ts['비견'] || 0) + (ts['겁재'] || 0) + (ts['식신'] || 0) + (ts['상관'] || 0) + (ts['편관'] || 0);
+      scoreObj.receptivity = (ts['정인'] || 0) + (ts['편인'] || 0) + (ts['정관'] || 0) + (ts['정재'] || 0);
+
+      // 💡 setTimeout 없이 즉시 인코딩 후 라우팅
+      const hexCode = encodeSajuToDynamicHex(scoreObj, compress);
+      localStorage.setItem('user_frequency_code', hexCode);
+      navigate('/result', { state: { userCode: hexCode }, replace: true });
+
+    } catch (error) {
+      console.error("Decoding Error:", error);
+    }
+  };
+
+  return {
+    birthDate, setBirthDate,
+    birthTime, setBirthTime,
+    isMale, setIsMale,
+    handleCalculate
+  };
+}
+</file>
+
+<file path="features/synergy/components/SynergyDebugPanel.tsx">
+import { motion } from "framer-motion";
+
+const DEBUG_CONFIG = [
+  { label: "POLARITY", key: "gender", textColor: "text-stone-600" },
+  {
+    label: "DAY MASTER",
+    key: "dayMaster",
+    textColor: "text-emerald-600 font-bold",
+  },
+  {
+    label: "HEX PILLARS",
+    key: "pillars",
+    textColor: "text-stone-700 font-bold tracking-widest",
+  },
+  { label: "YIN / YANG", key: "yinYang", textColor: "text-stone-400" },
+  { label: "ELEMENTS", key: "elements", textColor: "text-cyan-600 font-bold" },
+  { label: "DOMINANT", key: "dominant", textColor: "text-amber-600 font-bold" },
+  {
+    label: "SP. STARS",
+    key: "specialStars",
+    textColor: "text-purple-600 font-bold",
+  },
+  { label: "2026 ORBIT", key: "orbit2026", textColor: "text-stone-400/70" },
+] as const;
+
+export default function SynergyDebugPanel({
+  masterDebugData,
+}: {
+  masterDebugData: any;
+}) {
+  if (!masterDebugData) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      className="surface-glass overflow-hidden shadow-md my-4 w-full max-w-[340px] mx-auto"
+    >
+      <div className="flex items-center justify-between px-4 py-3 bg-stone-50/60 border-b border-stone-200/40 text-[10px] font-mono tracking-wider">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+          <span className="font-bold text-stone-700">MASTER DECODER v3.1</span>
+        </div>
+        <span className="text-stone-400 opacity-80">ENCRYPTION: AES-256</span>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 px-4 py-2 bg-stone-100/30 border-b border-stone-200/20 font-mono text-[10px] font-bold text-stone-400 tracking-tight">
+        <span>SYSTEM_PARAM</span>
+        <span className="text-right text-amber-600/80">LOCAL_ME</span>
+        <span className="text-right text-stone-500">REMOTE_TARGET</span>
+      </div>
+
+      <div className="flex flex-col divide-y divide-stone-100/60 bg-white/30 font-mono text-[11px]">
+        {DEBUG_CONFIG.map(({ label, key, textColor }) => (
+          <div
+            key={key}
+            className="grid grid-cols-3 gap-2 px-4 py-2.5 items-center"
+          >
+            <span className="text-stone-400 font-medium tracking-tight">
+              {label}
+            </span>
+            <span className={`text-right ${textColor}`}>
+              {masterDebugData.me[key as keyof typeof masterDebugData.me]}
+            </span>
+            <span className={`text-right ${textColor}`}>
+              {
+                masterDebugData.target[
+                  key as keyof typeof masterDebugData.target
+                ]
+              }
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="p-4 bg-stone-50/60 border-t border-stone-200/40 flex flex-col gap-1.5 font-mono text-[11px] text-stone-500">
+        <div className="flex justify-between items-center">
+          <span className="text-stone-400">Algorithm_Type</span>
+          <span className="text-amber-600 font-bold">
+            [{masterDebugData.algo.type}]
+          </span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-stone-400">Raw_Synergy_Score</span>
+          <span className="text-stone-800 font-extrabold text-sm tracking-tight">
+            {masterDebugData.algo.baseScore}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+</file>
+
+<file path="features/synergy/components/SynergyEmptyState.tsx">
+import { motion } from 'framer-motion';
+
+interface Props {
+  onNavigateTest: () => void;
+  onNavigateHome: () => void;
+}
+
+export default function SynergyEmptyState({ onNavigateTest, onNavigateHome }: Props) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
+      className="w-full h-full flex flex-col lg:flex-row items-center justify-center gap-[6vh] lg:gap-20"
+    >
+      <div className="flex-1 flex flex-col items-center lg:items-end text-center lg:text-right">
+        <header className="mb-[4vh] shrink-0">
+          <span className="font-space text-amber-500 font-black tracking-[0.5em] text-[max(10px,0.8vw)] uppercase mb-2 block opacity-90 drop-shadow-sm">Moonlight Garden</span>
+          <h1 className="text-[max(1.8rem,3.2vw)] font-light tracking-tighter text-stone-800 leading-tight break-keep">
+            아직 당신의 달빛이 <br />
+            <span className="font-serif italic font-medium text-amber-500">기록되지 않았습니다</span>
+          </h1>
+        </header>
+        
+        <div className="w-[max(180px,14vw)] h-[max(180px,14vw)] rounded-full border-[1px] border-amber-200/50 flex items-center justify-center relative mb-[2vh]">
+          <motion.div 
+            animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.5, 0.1] }}
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            className="absolute inset-4 rounded-full border-[1px] border-amber-100/50"
+          />
+          <span className="text-[max(2.2rem,3.5vw)] filter opacity-40 drop-shadow-md">🌙</span>
+        </div>
+      </div>
+
+      <div className="flex-1 flex flex-col items-center lg:items-start">
+        <div className="bg-white/80 backdrop-blur-3xl border border-stone-200/60 p-[max(2rem,3.5vw)] rounded-[max(2.5rem,4vh)] shadow-[0_10px_30px_rgba(0,0,0,0.05)] w-full max-w-[480px]">
+          <h2 className="text-[max(1.2rem,1.8vw)] font-bold text-stone-800 mb-5 break-keep leading-snug">
+            달빛의 시작점은 바로 당신입니다.
+          </h2>
+          <p className="text-stone-500 text-[max(13px,1vw)] leading-[1.8] break-keep font-medium mb-10">
+            타인과 마음을 대조하기 위해서는 먼저 당신이라는 고유한 빛깔이 필요합니다. 
+            당신이 타고난 시공간의 기운을 먼저 확인하고 오시겠어요?
+          </p>
+          <div className="flex flex-row gap-3 w-full">
+            <button 
+              onClick={onNavigateTest} 
+              className="flex-[2] h-[max(58px,7vh)] rounded-full bg-amber-500 text-white font-bold text-[max(14px,1.1vw)] tracking-[0.2em] shadow-[0_0_15px_rgba(245,158,11,0.2)] active:scale-[0.97] transition-all uppercase hover:bg-amber-600"
+            >
+              나의 달빛 기록하기
+            </button>
+            <button 
+              onClick={onNavigateHome} 
+              className="flex-1 h-[max(58px,7vh)] rounded-full bg-white border border-stone-200 text-stone-600 font-bold text-[max(13px,1vw)] tracking-widest uppercase active:scale-[0.97] transition-all hover:bg-stone-50 shadow-sm"
+            >
+              HOME
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+</file>
+
+<file path="features/synergy/components/SynergyInputBox.tsx">
+import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
+
+interface Props {
+  typingCode: string;
+  setTypingCode: (val: string) => void;
+  handleMatch: () => void;
+  error: string | null;
+  toggleDevMode: () => void;
+  developerMode: boolean;
+  clickCount: number;
+}
+
+export default function SynergyInputBox({ 
+  typingCode, 
+  setTypingCode, 
+  handleMatch, 
+  error, 
+  toggleDevMode, 
+  developerMode, 
+  clickCount 
+}: Props) {
+  return (
+    <motion.div 
+      key="input-box" 
+      initial={{ opacity: 0, y: 10 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      exit={{ opacity: 0, y: -10 }}
+      // 🧩 1. 기존 클래스 삭제 후 패딩(p-6)과 수직 정렬(flex-col gap-4) 유틸리티 주입
+      className="surface-glass p-5 sm:p-6 flex flex-col gap-4 shadow-sm relative overflow-hidden"
+    >
+      {/* 🧩 2. 상단 타겟 안내 문구 및 이스터에그 트리거 라인 정돈 */}
+      <div 
+        onClick={toggleDevMode} 
+        className="text-[11px] font-mono font-bold text-stone-400 tracking-wider uppercase select-none cursor-pointer flex items-center justify-between h-4"
+      >
+        <span>01. Connection Target</span>
+        {developerMode ? (
+          <span className="text-amber-500 font-extrabold text-[10px] bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/40 animate-pulse">
+            DECODED
+          </span>
+        ) : (
+          <span className="opacity-30 font-mono tracking-tighter text-[10px]">
+            {clickCount > 0 ? "•".repeat(clickCount) : "READY"}
+          </span>
+        )}
+      </div>
+
+      {/* 🧩 3. 기존 .hex-input ➔ 공통 .surface-input 토큰 바인딩 및 코드 전용 타이포그래피 최적화 */}
+      <div className="relative flex flex-col">
+        <input 
+          type="text" 
+          maxLength={6} 
+          value={typingCode} 
+          onChange={(e) => setTypingCode(e.target.value.toUpperCase().replace(/[^0-9A-F]/g, ''))} 
+          placeholder="상대방 코드를 입력하세요" 
+          // 💡 font-mono와 굵은 자간(tracking-[0.25em])을 주어 사주 헥스코드가 기계처럼 멋지게 찍히도록 연출했습니다.
+          className="surface-input w-full font-mono text-center text-xl font-extrabold tracking-[0.25em] text-stone-800 uppercase h-13 placeholder:tracking-normal placeholder:font-sans placeholder:text-sm placeholder:font-medium placeholder:text-stone-300" 
+        />
+        
+        {/* 에러 고정 메시지 가독성 상향 */}
+        {error && (
+          <motion.div 
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-xs font-semibold text-red-500 mt-1.5 pl-1 text-left"
+          >
+            {error}
+          </motion.div>
+        )}
+      </div>
+
+      {/* 🧩 4. 기존 .btn-match ➔ 글로벌 표준 스펙 대형 버튼인 .btn-primary 대입 */}
+      <button 
+        onClick={handleMatch} 
+        className="btn-primary flex items-center justify-center gap-2"
+      >
+        <Sparkles className="w-4 h-4 text-amber-100 fill-amber-100/20" />
+        달빛 엮기
+      </button>
+    </motion.div>
+  );
+}
+</file>
+
+<file path="features/synergy/components/SynergyReport.tsx">
+import { motion } from "framer-motion";
+
+export interface ComparisonItem {
+  text: string;
+  myChoice: string;
+  partnerChoice: string;
+  isMatch: boolean;
+}
+
+export interface SynergyReportProps {
+  viewMode: "similarity" | "synergy";
+  setViewMode: (mode: "similarity" | "synergy") => void;
+  comparisonData: ComparisonItem[];
+  myOriginData: any | null;
+  partnerOriginData: any | null;
+  synergyData: {
+    score: number;
+    synergyType: "상생" | "상극" | "균형";
+    myDom: any;
+    partnerDom: any;
+  } | null;
+  advancedReadingText: string;
+}
+
+const GRAPH_COLOR_MAP: Record<
+  string,
+  { text: string; bg: string; border: string }
+> = {
+  wood: { text: "#3A5A40", bg: "#F1F4F1", border: "border-emerald-200" },
+  fire: { text: "#C1121F", bg: "#FDF4F4", border: "border-rose-200" },
+  earth: { text: "#A67C00", bg: "#F9F6F2", border: "border-amber-200" },
+  metal: { text: "#57534E", bg: "#F5F5F4", border: "border-stone-300" },
+  water: { text: "#1D3557", bg: "#F0F4F8", border: "border-sky-200" },
+};
+
+export default function SynergyReport({
+  viewMode,
+  setViewMode,
+  comparisonData,
+  myOriginData,
+  partnerOriginData,
+  synergyData,
+  advancedReadingText,
+}: SynergyReportProps) {
+  const labels = ["年", "月", "日", "時"];
+
+  const myElementId = synergyData?.myDom?.id || "wood";
+  const partnerElementId = synergyData?.partnerDom?.id || "wood";
+
+  const myTheme = GRAPH_COLOR_MAP[myElementId] || GRAPH_COLOR_MAP["wood"];
+  const partnerTheme =
+    GRAPH_COLOR_MAP[partnerElementId] || GRAPH_COLOR_MAP["wood"];
+
+  return (
+    <motion.div
+      key="report"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="flex-1 flex flex-col min-h-0 w-full h-full"
+    >
+      <div className="flex bg-white/80 backdrop-blur-xl p-1.5 rounded-full border border-stone-200/60 mb-6 lg:ml-auto w-full lg:w-[max(280px,22vw)] shadow-sm shrink-0">
+        <button
+          onClick={() => setViewMode("similarity")}
+          className={`flex-1 py-[max(0.6rem,1vh)] text-[max(11px,0.8vw)] font-bold rounded-full transition-all ${viewMode === "similarity" ? "bg-white text-stone-800 shadow-sm border border-stone-200/50" : "text-stone-400 hover:text-stone-600"}`}
+        >
+          유사도
+        </button>
+        <button
+          onClick={() => setViewMode("synergy")}
+          className={`flex-1 py-[max(0.6rem,1vh)] text-[max(11px,0.8vw)] font-bold rounded-full transition-all ${viewMode === "synergy" ? "bg-amber-500 text-white shadow-md" : "text-stone-400 hover:text-stone-600"}`}
+        >
+          궁합
+        </button>
+      </div>
+
+      <div className="flex-1 bg-white/60 backdrop-blur-3xl border border-stone-200/60 rounded-[max(2.2rem,3vh)] shadow-lg overflow-hidden flex flex-col min-h-0">
+        <div className="flex-1 overflow-y-auto custom-scrollbar p-[max(1.5rem,3vw)]">
+          {viewMode === "similarity" ? (
+            <div className="space-y-8">
+              {comparisonData.map((data, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col text-left space-y-4 pb-8 border-b border-stone-200/50 last:border-0"
+                >
+                  <p className="text-[max(14px,1.1vw)] text-stone-800 font-medium leading-relaxed break-keep">
+                    <span
+                      className={`text-[max(11px,0.8vw)] font-black mr-2 font-space ${data.isMatch ? "text-amber-500" : "text-stone-300"}`}
+                    >
+                      Q{String(i + 1).padStart(2, "0")}.
+                    </span>
+                    {data.text}
+                  </p>
+
+                  {data.isMatch ? (
+                    <div className="p-5 rounded-2xl text-[max(13px,1vw)] bg-amber-50 border border-amber-100/50 flex items-center justify-between font-bold text-amber-700">
+                      <span>{data.myChoice}</span>
+                      <span className="opacity-60 text-[max(10px,0.7vw)] uppercase tracking-widest text-amber-600">
+                        🔗 Spectrum Matches
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-5 rounded-2xl text-[max(11px,0.9vw)] bg-stone-50 border border-stone-100 flex flex-col gap-1 text-stone-600">
+                        <span className="text-[max(9px,0.6vw)] text-stone-400 font-space uppercase">
+                          My Light
+                        </span>
+                        {data.myChoice}
+                      </div>
+                      <div className="p-5 rounded-2xl text-[max(11px,0.9vw)] bg-stone-50 border border-stone-100 flex flex-col gap-1 text-stone-600">
+                        <span className="text-[max(9px,0.6vw)] text-stone-400 font-space uppercase">
+                          Target
+                        </span>
+                        {data.partnerChoice}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center">
+              <div className="w-full max-w-[550px] p-[max(2rem,3vw)] rounded-[2.5rem] bg-white/50 border border-stone-200/60 shadow-sm mb-12 backdrop-blur-md relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-300/50 to-transparent" />
+                <h4 className="text-[max(11px,0.8vw)] font-black text-amber-600 mb-8 uppercase tracking-[0.5em] text-center border-b border-amber-100/50 pb-4">
+                  Destiny Pillars
+                </h4>
+
+                <div className="flex justify-around items-center px-4">
+                  <div className="flex flex-col gap-[max(56px,7.5vh)] font-space font-black text-[max(10px,0.7vw)] text-stone-300 pt-10">
+                    <span className="flex items-center">ME</span>
+                    <span className="flex items-center text-amber-400">
+                      TARGET
+                    </span>
+                  </div>
+
+                  <div className="flex gap-[max(0.6rem,1vw)]">
+                    {labels.map((l, idx) => {
+                      const isDayMaster = idx === 2;
+                      return (
+                        <div
+                          key={idx}
+                          className="flex flex-col items-center gap-3"
+                        >
+                          <span className="text-[max(11px,0.8vw)] font-serif font-bold text-stone-400">
+                            {l}
+                          </span>
+
+                          <div
+                            className={`w-[max(44px,4.5vw)] py-4 rounded-2xl border ${isDayMaster ? "border-amber-200 bg-amber-50 shadow-sm" : "border-stone-200 bg-stone-50"} flex flex-col items-center gap-1`}
+                          >
+                            <span
+                              className={`text-[max(1.2rem,1.8vw)] font-serif font-bold ${isDayMaster ? "text-amber-900" : "text-stone-800"}`}
+                            >
+                              {myOriginData?.pillars?.[idx]?.[0]}
+                            </span>
+                            <span
+                              className={`text-[max(1.2rem,1.8vw)] font-serif font-bold ${isDayMaster ? "text-amber-700" : "text-stone-500"}`}
+                            >
+                              {myOriginData?.pillars?.[idx]?.[1]}
+                            </span>
+                          </div>
+
+                          <div
+                            className={`w-[max(44px,4.5vw)] py-4 rounded-2xl border ${isDayMaster ? "border-amber-200 bg-amber-50 shadow-sm" : "border-stone-200 bg-stone-50"} flex flex-col items-center gap-1`}
+                          >
+                            <span
+                              className={`text-[max(1.2rem,1.8vw)] font-serif font-bold ${isDayMaster ? "text-amber-900" : "text-stone-800"}`}
+                            >
+                              {partnerOriginData?.pillars?.[idx]?.[0]}
+                            </span>
+                            <span
+                              className={`text-[max(1.2rem,1.8vw)] font-serif font-bold ${isDayMaster ? "text-amber-700" : "text-stone-500"}`}
+                            >
+                              {partnerOriginData?.pillars?.[idx]?.[1]}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-10 mb-12">
+                <div
+                  style={{ color: myTheme.text, backgroundColor: myTheme.bg }}
+                  className={`w-[max(70px,6vw)] h-[max(70px,6vw)] rounded-full border shadow-sm flex items-center justify-center text-[max(1.8rem,2.5vw)] font-serif font-bold backdrop-blur-md transition-colors ${myTheme.border}`}
+                >
+                  {synergyData?.myDom?.hanja}
+                </div>
+
+                <div className="text-[max(2rem,3vw)] scale-110 drop-shadow-sm animate-pulse text-amber-400">
+                  ✨
+                </div>
+
+                <div
+                  style={{
+                    color: partnerTheme.text,
+                    backgroundColor: partnerTheme.bg,
+                  }}
+                  className={`w-[max(70px,6vw)] h-[max(70px,6vw)] rounded-full border shadow-sm flex items-center justify-center text-[max(1.8rem,2.5vw)] font-serif font-bold backdrop-blur-md transition-colors ${partnerTheme.border}`}
+                >
+                  {synergyData?.partnerDom?.hanja}
+                </div>
+              </div>
+
+              <div className="max-w-[600px] w-full px-6 pb-12">
+                <p className="text-[max(14px,1.1vw)] text-stone-600 leading-[1.9] break-keep font-medium whitespace-pre-wrap text-center italic">
+                  {advancedReadingText}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+</file>
+
+<file path="features/synergy/components/SynergyScoreBox.tsx">
+import { motion } from 'framer-motion';
+import { RotateCcw, Home } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+interface Props {
+  viewMode: 'similarity' | 'synergy';
+  syncRate: number;
+  synergyScore?: number;
+  onReset: () => void;
+}
+
+export default function SynergyScoreBox({ viewMode, syncRate, synergyScore, onReset }: Props) {
+  const navigate = useNavigate();
+  
+  return (
+    <motion.div 
+      key="score-box" 
+      initial={{ opacity: 0, scale: 0.95 }} 
+      animate={{ opacity: 1, scale: 1 }} 
+      exit={{ opacity: 0, scale: 0.95 }}
+      // 🧩 1. SynergyInputBox와 부드럽게 스위칭되도록 외관 규격을 surface-glass 토큰으로 일치화
+      // 💡 패딩(p-5 sm:p-6)과 그림자 설정을 입력창과 1:1로 일치시켜 컴포넌트 전환 시 화면이 들썩거리는 현상을 막아줍니다.
+      className="surface-glass p-5 sm:p-6 flex flex-col items-center text-center gap-4 shadow-sm relative overflow-hidden"
+    >
+      {/* 🧩 2. 기존 .score-label ➔ 미니멀 모노 라벨 가이드 정돈 */}
+      <span className="text-[11px] font-mono font-bold text-stone-400 tracking-wider uppercase select-none">
+        {viewMode === 'similarity' ? '02. Sync Rate' : '02. Synergy Score'}
+      </span>
+      
+      {/* 🧩 3. 기존 .score-value ➔ 대형 주파수 점수 디스플레이 개량 */}
+      {/* 💡 숫자가 눈에 확 띄도록 font-mono와 굵은 자간을 입히고, 퍼센트 기호(%)는 앰버 컬러의 포인트 폰트로 밸런스를 맞췄습니다. */}
+      <div className="text-4xl sm:text-5xl font-black text-stone-800 font-mono tracking-tight my-1.5 flex items-baseline justify-center select-none">
+        {viewMode === 'similarity' ? syncRate : synergyScore}
+        <span className="text-xl sm:text-2xl font-extrabold text-amber-500 ml-1 font-sans">%</span>
+      </div>
+      
+      {/* 🧩 4. 기존 .action-row ➔ 반응형 2열 균등 그리드 배치 및 공통 디자인 버튼 토큰 이주 */}
+      {/* 💡 정형화되지 않았던 아웃라인 버튼 대신, 디자인 시스템 표준 규격인 btn-primary와 btn-secondary를 바인딩했습니다. */}
+      <div className="grid grid-cols-2 gap-2 w-full mt-1">
+         <button 
+           onClick={onReset} 
+           className="btn-primary flex items-center justify-center gap-1.5 h-11 text-xs"
+         >
+           <RotateCcw className="w-3.5 h-3.5" /> 
+           다시 엮기
+         </button>
+         
+         <button 
+           onClick={() => navigate('/')} 
+           className="btn-secondary flex items-center justify-center gap-1.5 h-11 text-xs"
+         >
+           <Home className="w-3.5 h-3.5 text-stone-500" /> 
+           HOME
+         </button>
+      </div>
+    </motion.div>
+  );
+}
+</file>
+
+<file path="features/synergy/engines/synergyAnalyzer.ts">
+import masterDB from '@/shared/data/synergy_db.json';
+
+const synergyDB = masterDB.synergy;
+
+export interface SynergyParams {
+  syncRate: number;
+  synergyType: '상생' | '상극' | '균형' | string;
+  myDomName: string;
+  partnerDomName: string;
+}
+
+const pickRandom = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+
+const getJosa = (word: string) => {
+  if (!word) return '와';
+  const lastChar = word.charCodeAt(word.length - 1);
+  if (lastChar < 0xAC00 || lastChar > 0xD7A3) return '와'; 
+  const hasBatchim = (lastChar - 0xAC00) % 28 > 0;
+  return hasBatchim ? '과' : '와';
+};
+
+export const generateAdvancedReading = ({
+  syncRate,
+  synergyType,
+  myDomName,
+  partnerDomName
+}: SynergyParams): string => {
+  
+  const intro = pickRandom(synergyDB.intros);
+
+  let syncKey: 'high' | 'mid' | 'low' = 'mid';
+  if (syncRate >= 80) syncKey = 'high';
+  else if (syncRate < 40) syncKey = 'low';
+  
+  const syncRaw = pickRandom(synergyDB.syncReadings[syncKey]);
+  const syncDesc = syncRaw.replace(/{syncRate}/g, syncRate.toString());
+
+  const synKey = (synergyType === '상생' || synergyType === '상극' || synergyType === '균형') ? synergyType : '균형';
+  const synRaw = pickRandom(synergyDB.synergyReadings[synKey as keyof typeof synergyDB.synergyReadings]);
+  
+  const synDesc = synRaw
+    .replace(/{myDom}/g, myDomName)
+    .replace(/{partnerDom}/g, partnerDomName)
+    .replace(/와\(과\)/g, getJosa(myDomName));
+
+  const outro = pickRandom(synergyDB.outros);
+
+  return `${intro}\n\n${syncDesc}\n\n${synDesc}\n\n${outro}`;
+};
+</file>
+
+<file path="features/synergy/engines/useSynergy.ts">
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useHexCompress } from '@/shared/hooks/useHexCompress';
+import { calculateElementalSynergy, calculatePerfectSajuOrigin } from '@/shared/utils/destinyEngine';
+import { generateAdvancedReading } from '@/features/synergy/engines/synergyAnalyzer'; 
+import { parseSajuData } from '@/features/saju/engines/sajuParser';
+import masterDB from '@/shared/data/questions_db.json';
+
+export function useSynergy() {
+  const [searchParams] = useSearchParams();
+  const { decompress, getElementScores } = useHexCompress();
+  const questions = masterDB.questions as unknown as Question[];
+
+  const urlTargetCode = useMemo(() => searchParams.get('target')?.toUpperCase().replace(/[^0-9A-F]/g, '') || "", [searchParams]);
+
+  const [typingCode, setTypingCode] = useState(urlTargetCode);
+  const [viewMode, setViewMode] = useState<'similarity' | 'synergy'>('similarity');
+  const [error, setError] = useState<string | null>(null);
+  const [isMatched, setIsMatched] = useState(urlTargetCode.length === 6);
+  
+  const [activePartnerScores, setActivePartnerScores] = useState<any | null>(() => {
+    if (urlTargetCode.length === 6) return getElementScores(decompress(urlTargetCode));
+    return null;
+  });
+
+  const [developerMode, setDeveloperMode] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+
+  // 내 파동 데이터 연산
+  const myCode = useMemo(() => localStorage.getItem('user_frequency_code'), []);
+  const myScores = useMemo(() => myCode ? getElementScores(decompress(myCode)) : null, [myCode, decompress, getElementScores]);
+  const isMyYangPolarity = useMemo(() => myScores ? (myScores.wood + myScores.fire) >= (myScores.metal + myScores.water) : true, [myScores]);
+  const myOriginData = useMemo(() => myScores ? calculatePerfectSajuOrigin(myScores) : null, [myScores]);
+  const myParsedSaju = useMemo(() => myOriginData ? parseSajuData(myOriginData.pillars as [string, string, string, string], isMyYangPolarity, 2026) : null, [myOriginData, isMyYangPolarity]);
+
+  const isPartnerYangPolarity = useMemo(() => activePartnerScores ? (activePartnerScores.wood + activePartnerScores.fire) >= (activePartnerScores.metal + activePartnerScores.water) : true, [activePartnerScores]);
+  const partnerOriginData = useMemo(() => isMatched && activePartnerScores ? calculatePerfectSajuOrigin(activePartnerScores) : null, [isMatched, activePartnerScores]);
+  const partnerParsedSaju = useMemo(() => partnerOriginData ? parseSajuData(partnerOriginData.pillars as [string, string, string, string], isPartnerYangPolarity, 2026) : null, [partnerOriginData, isPartnerYangPolarity]);
+
+  const comparisonData = useMemo(() => {
+    if (!isMatched || !myCode || !typingCode) return [];
+    const myBits = decompress(myCode);
+    const partnerBits = decompress(typingCode);
+    return questions.map((q, idx) => ({
+      text: q.text,
+      myChoice: q.options.find(opt => opt.value === myBits[idx])?.label || "",
+      partnerChoice: q.options.find(opt => opt.value === partnerBits[idx])?.label || "",
+      isMatch: myBits[idx] === partnerBits[idx]
+    }));
+  }, [isMatched, myCode, typingCode, decompress, questions]);
+
+  const syncRate = useMemo(() => isMatched ? Math.round((comparisonData.filter(d => d.isMatch).length / 24) * 100) : 0, [isMatched, comparisonData]);
+
+  const synergyData = useMemo(() => {
+    if (!isMatched || !myScores || !activePartnerScores) return null;
+    return calculateElementalSynergy(myScores, activePartnerScores);
+  }, [isMatched, myScores, activePartnerScores]);
+
+  const advancedReadingText = useMemo(() => {
+    if (!synergyData || syncRate === undefined) return "";
+    return generateAdvancedReading({ syncRate, synergyType: synergyData.synergyType, myDomName: synergyData.myDom.name, partnerDomName: synergyData.partnerDom.name });
+  }, [synergyData, syncRate]);
+
+  const masterDebugData = useMemo(() => {
+    // ... 기존 masterDebugData 로직 유지 ...
+    if (!isMatched || !typingCode || !activePartnerScores || !partnerParsedSaju || !myParsedSaju || !synergyData) return null;
+    const formatScores = (s: any) => `木${s.wood} 火${s.fire} 土${s.earth} 金${s.metal} 水${s.water}`;
+    const getSafeYinYang = (saju: any) => `${saju?.analytics.elements.yinYang?.['+'] ?? 0} : ${saju?.analytics.elements.yinYang?.['-'] ?? 0}`;
+    return {
+      me: { 
+        gender: isMyYangPolarity ? "남성(+)" : "여성(-)", 
+        dayMaster: myOriginData?.pillars[2]?.[0] || '?', pillars: myOriginData?.pillars?.join(''), 
+        yinYang: getSafeYinYang(myParsedSaju), elements: formatScores(myScores!),
+        dominant: myParsedSaju.analytics.tenGods.dominant?.map(g => g.name.split(' ')[0]).join(', ') || 'NONE',
+        specialStars: myParsedSaju.analytics.specialStars?.map(s => s.name.split(' ')[0]).join(', ') || 'NONE',
+        orbit2026: myParsedSaju.analytics.fortune?.yearly?.pillar || '?'
+      },
+      target: { 
+        gender: isPartnerYangPolarity ? "남성(+)" : "여성(-)", 
+        dayMaster: partnerOriginData?.pillars[2]?.[0] || '?', pillars: partnerOriginData?.pillars?.join(''), 
+        yinYang: getSafeYinYang(partnerParsedSaju), elements: formatScores(activePartnerScores),
+        dominant: partnerParsedSaju.analytics.tenGods.dominant?.map(g => g.name.split(' ')[0]).join(', ') || 'NONE',
+        specialStars: partnerParsedSaju.analytics.specialStars?.map(s => s.name.split(' ')[0]).join(', ') || 'NONE',
+        orbit2026: partnerParsedSaju.analytics.fortune?.yearly?.pillar || '?'
+      },
+      algo: { type: synergyData.synergyType, baseScore: synergyData.score }
+    };
+  }, [isMatched, typingCode, activePartnerScores, partnerParsedSaju, myParsedSaju, isMyYangPolarity, isPartnerYangPolarity, myOriginData, partnerOriginData, myScores, synergyData]);
+
+  const handleMatch = () => {
+    if (typingCode.length === 6) { 
+      setError(null); setActivePartnerScores(getElementScores(decompress(typingCode))); setIsMatched(true); 
+    } else { 
+      setError("6자리 코드를 확인해주세요."); setTimeout(() => setError(null), 2000); 
+    }
+  };
+  const handleReset = () => { setIsMatched(false); setTypingCode(""); setActivePartnerScores(null); };
+  const toggleDevMode = () => setClickCount(p => (p + 1 >= 5 ? (setDeveloperMode(!developerMode), 0) : p + 1));
+
+  return {
+    myCode, myScores, typingCode, setTypingCode, viewMode, setViewMode, error, isMatched, activePartnerScores,
+    developerMode, clickCount, comparisonData, syncRate, synergyData, advancedReadingText, 
+    myParsedSaju, partnerParsedSaju, masterDebugData, handleMatch, handleReset, toggleDevMode
+  };
+}
+</file>
+
+<file path="features/test/components/QuestionCard.tsx">
+import { motion } from 'framer-motion';
+
+const TARGET_LABELS: Record<string, string> = {
+  month: "Chapter I. 세상과 교감하는 달빛",
+  hour: "Chapter II. 미래로 향하는 궤적",
+  day: "Chapter III. 내면의 고요한 정원",
+  year: "Chapter IV. 과거와 뿌리의 달빛",
+};
+
+interface Props {
+  currentStep: number;
+  totalSteps: number;
+  question: any;
+  currentAnswer?: number;
+  isTransitioning: boolean;
+  onAnswer: (value: number) => void;
+  onAnimationComplete: () => void;
+}
+
+export default function QuestionCard({
+  currentStep,
+  totalSteps,
+  question,
+  currentAnswer,
+  isTransitioning,
+  onAnswer,
+  onAnimationComplete,
+}: Props) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25, ease: "linear" }}
+      onAnimationComplete={onAnimationComplete}
+      className="w-full max-w-[440px] mx-auto flex flex-col z-10"
+    >
+      <article className="text-center mb-8 flex flex-col items-center">
+        <span className="text-subtitle mb-2">
+          {TARGET_LABELS[question.target] || "Chapter Unknown"}
+        </span>
+
+        <span className="text-[10px] font-mono font-bold tracking-widest text-stone-400 uppercase bg-stone-100 px-2 py-0.5 rounded-md">
+          Question {String(currentStep + 1).padStart(2, "0")} / {totalSteps}
+        </span>
+
+        <h2 className="text-hero mt-5 text-[1.35rem] md:text-2xl leading-relaxed font-extrabold text-stone-800 break-keep px-2">
+          {question.text}
+        </h2>
+      </article>
+
+      <nav className="w-full flex flex-col gap-2.5">
+        {question.options.map((opt: any, idx: number) => {
+          const isSelected = currentAnswer === opt.value;
+          return (
+            <motion.button
+              key={idx}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: idx * 0.03, duration: 0.2 }}
+              onClick={() => onAnswer(opt.value)}
+              disabled={isTransitioning}
+              className={`w-full min-h-[56px] px-5 py-3.5 rounded-xl border text-left flex items-center justify-between transition-all font-medium text-sm text-stone-700 active:scale-[0.99] disabled:opacity-50 select-none cursor-pointer ${
+                isSelected
+                  ? "bg-amber-50/40 border-amber-500 text-stone-900 shadow-sm font-bold ring-1 ring-amber-500/20"
+                  : "bg-white border-stone-200/80 hover:bg-stone-50 hover:border-stone-300"
+              }`}
+            >
+              <span className="flex-1 pr-4 leading-normal">{opt.label}</span>
+
+              <div
+                className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 bg-white transition-all ${
+                  isSelected ? "border-amber-500" : "border-stone-300"
+                }`}
+              >
+                {isSelected && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-2 h-2 rounded-full bg-amber-500"
+                  />
+                )}
+              </div>
+            </motion.button>
+          );
+        })}
+      </nav>
+    </motion.div>
+  );
+}
+</file>
+
+<file path="features/test/components/TestProgressBar.tsx">
+import { motion } from "framer-motion";
+import Button from "@/shared/ui/Button";
+
+interface Props {
+  currentStep: number;
+  totalSteps: number;
+  isTransitioning: boolean;
+  onBack: () => void;
+}
+
+export default function TestProgressBar({
+  currentStep,
+  totalSteps,
+  isTransitioning,
+  onBack,
+}: Props) {
+  return (
+    <header className="w-full max-w-[440px] mx-auto flex items-center justify-between gap-4 py-4 px-2 z-20 relative">
+      <Button
+        variant="icon"
+        onClick={onBack}
+        disabled={isTransitioning}
+        className="btn-icon"
+      >
+        <svg
+          className="w-4 h-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </Button>
+
+      <div className="flex-1 flex flex-col items-center gap-2">
+        <span className="text-subtitle !mb-0 select-none">
+          Moonlight Garden
+        </span>
+
+        <div className="w-full h-1 bg-stone-100 rounded-full overflow-hidden relative">
+          <motion.div
+            className="h-full bg-amber-400 rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          />
+        </div>
+      </div>
+      <div className="w-10 h-10 shrink-0 pointer-events-none" />
+    </header>
+  );
+}
+</file>
+
+<file path="features/test/engines/reverseEngine.ts">
+import masterDB from '@/shared/data/questions_db.json';
+
+interface BeamPath extends ElementScores {
+  bits: number[];
+  error: number;
+}
+
+export function encodeSajuToDynamicHex(targetSaju: ElementScores, compressFn: (bits: number[]) => string): string {
+  const questions = masterDB.questions as unknown as Question[];
+  
+  const totalSajuScore = targetSaju.wood + targetSaju.fire + targetSaju.earth + targetSaju.metal + targetSaju.water;
+  if (totalSajuScore === 0) return compressFn(Array(24).fill(0));
+
+  const targetRatio = {
+    wood: targetSaju.wood / totalSajuScore,
+    fire: targetSaju.fire / totalSajuScore,
+    earth: targetSaju.earth / totalSajuScore,
+    metal: targetSaju.metal / totalSajuScore,
+    water: targetSaju.water / totalSajuScore,
+  };
+
+  const targetIsYang = (targetSaju.wood + targetSaju.fire) >= (targetSaju.metal + targetSaju.water);
+  const elementsList = ['wood', 'fire', 'earth', 'metal', 'water'] as const;
+  const targetDominant = elementsList.reduce((a, b) => (targetSaju[a] as number) > (targetSaju[b] as number) ? a : b);
+
+  const BEAM_WIDTH = 3000; 
+  let paths: BeamPath[] = [{ 
+    wood: 0, fire: 0, earth: 0, metal: 0, water: 0, 
+    yin: 0, yang: 0, action: 0, receptivity: 0, 
+    bits: [], error: 0 
+  }];
+  let currentMaxTotal = 0;
+
+  for (let i = 0; i < questions.length; i++) {
+    const q = questions[i];
+    const newPaths: BeamPath[] = [];
+    const progress = (i + 1) / questions.length;
+
+    const maxPointsInQ = Math.max(...q.options.map((o: Option) => 
+      Math.abs(o.impact?.wood || 0) + Math.abs(o.impact?.fire || 0) + 
+      Math.abs(o.impact?.earth || 0) + Math.abs(o.impact?.metal || 0) + Math.abs(o.impact?.water || 0)
+    ));
+    currentMaxTotal += (maxPointsInQ > 0 ? maxPointsInQ : 1);
+
+    for (const path of paths) {
+      for (const opt of q.options) {
+        const imp = opt.impact || {};
+        
+        const newScores = {
+          wood: path.wood + (imp.wood || 0),
+          fire: path.fire + (imp.fire || 0),
+          earth: path.earth + (imp.earth || 0),
+          metal: path.metal + (imp.metal || 0),
+          water: path.water + (imp.water || 0),
+          yin: path.yin + (imp.yin || 0),
+          yang: path.yang + (imp.yang || 0),
+          action: path.action + (imp.action || 0),
+          receptivity: path.receptivity + (imp.receptivity || 0)
+        };
+
+        const expectedWood = targetRatio.wood * currentMaxTotal;
+        const expectedFire = targetRatio.fire * currentMaxTotal;
+        const expectedEarth = targetRatio.earth * currentMaxTotal;
+        const expectedMetal = targetRatio.metal * currentMaxTotal;
+        const expectedWater = targetRatio.water * currentMaxTotal;
+
+        let error = 
+          Math.pow(newScores.wood - expectedWood, 2) + Math.pow(newScores.fire - expectedFire, 2) +
+          Math.pow(newScores.earth - expectedEarth, 2) + Math.pow(newScores.metal - expectedMetal, 2) +
+          Math.pow(newScores.water - expectedWater, 2);
+
+        const currentIsYang = newScores.yang >= newScores.yin;
+        if (currentIsYang !== targetIsYang) {
+          error += 800 * progress; 
+        }
+
+        const currentDominant = elementsList.reduce((a, b) => (newScores[a] as number) > (newScores[b] as number) ? a : b);
+        if (currentDominant !== targetDominant) {
+          error += 1500 * progress;
+        }
+
+        let bits: number[] = [];
+        if (typeof opt.value === 'number') bits = [opt.value];
+        else if (typeof opt.value === 'string') bits = opt.value.split('').map(Number);
+        else if (Array.isArray(opt.value)) bits = opt.value.map(Number);
+        else bits = [0];
+
+        newPaths.push({ ...newScores, bits: [...path.bits, ...bits], error });
+      }
+    }
+
+    newPaths.sort((a, b) => a.error - b.error);
+    paths = newPaths.slice(0, BEAM_WIDTH);
+  }
+
+  const bestPath = paths[0];
+  
+  return compressFn(bestPath.bits);
+}
+</file>
+
+<file path="features/test/engines/useTestProgress.ts">
+import { useState, useRef, useCallback } from "react";
+
+export function useTestProgress(totalSteps: number, onComplete: (answers: number[]) => void, onExit: () => void) {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const isLocked = useRef(false);
+
+  const handleAnswer = useCallback((value: number) => {
+    if (isLocked.current) return;
+    
+    isLocked.current = true;
+    setIsTransitioning(true);
+
+    const newAnswers = [...answers];
+    newAnswers[currentStep] = value;
+    setAnswers(newAnswers);
+
+    if (currentStep < totalSteps - 1) {
+      setCurrentStep((prev) => prev + 1);
+    } else {
+      onComplete(newAnswers);
+    }
+  }, [currentStep, totalSteps, answers, onComplete]);
+
+  const handleBack = useCallback(() => {
+    if (isLocked.current) return;
+    if (currentStep > 0) {
+      isLocked.current = true;
+      setIsTransitioning(true);
+      setCurrentStep((prev) => prev - 1);
+    } else {
+      onExit();
+    }
+  }, [currentStep, onExit]);
+
+  const releaseLock = useCallback(() => {
+    isLocked.current = false;
+    setIsTransitioning(false);
+  }, []);
+
+  return {
+    currentStep,
+    answers,
+    isTransitioning,
+    handleAnswer,
+    handleBack,
+    releaseLock
+  };
+}
+</file>
+
+<file path="pages/Home.tsx">
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import HeroCanvas from "@/features/home/components/HeroCanvas";
+import HomeActionNav from "@/features/home/components/HomeActionNav";
+
+const USER_CODE_KEY = "user_frequency_code";
+
+export default function Home() {
+  const [hasCode] = useState(() => !!localStorage.getItem(USER_CODE_KEY));
+
+  return (
+    <main className="layout-page">
+      <HeroCanvas />
+      <section className="relative z-10 w-full h-full flex flex-col items-center justify-start px-6 pt-[6vh] pointer-events-none">
+        <header className="surface-glass !bg-white/40 !backdrop-blur-lg border-white/50 p-8 rounded-[2.5rem] rounded-br-[1rem] text-center w-full max-w-[350px] shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
+          <span className="text-subtitle mb-3">Moonlight Garden</span>
+          <h1 className="text-hero flex flex-col gap-2">
+            <span className="text-[13px] text-stone-500 font-bold tracking-widest uppercase">안녕!</span>
+            <span className="leading-snug text-[1.4rem]">네 마음속엔 어떤 달이<br />살고 있니?</span>
+          </h1>
+        </header>
+
+        <div className="w-full max-w-[320px] mt-[42vh] pointer-events-auto">
+          <HomeActionNav hasCode={hasCode} />
+        </div>
+      </section>
+    </main>
+  );
+}
+</file>
+
+<file path="pages/RealSaju.tsx">
+import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { ChevronLeft } from "lucide-react";
+
+import { useRealSajuForm } from "@/features/saju/engines/useRealSajuForm";
+import RealSajuInputForm from "@/features/saju/components/RealSajuInputForm";
+
+export default function RealSaju() {
+  const navigate = useNavigate();
+
+  const {
+    birthDate,
+    setBirthDate,
+    birthTime,
+    setBirthTime,
+    isMale,
+    setIsMale,
+    handleCalculate,
+  } = useRealSajuForm();
+
+  return (
+    <main className="layout-page justify-center px-6">
+      <div className="decor-moon-bg" />
+      <div className="decor-stone-bg" />
+
+      <header className="absolute top-6 left-6 z-20">
+        <button
+          onClick={() => navigate(-1)}
+          className="btn-icon"
+          aria-label="뒤로가기"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+      </header>
+
+      <AnimatePresence mode="wait">
+        <RealSajuInputForm
+          birthDate={birthDate}
+          setBirthDate={setBirthDate}
+          birthTime={birthTime}
+          setBirthTime={setBirthTime}
+          isMale={isMale}
+          setIsMale={setIsMale}
+          onCalculate={handleCalculate}
+        />
+      </AnimatePresence>
+    </main>
+  );
+}
+</file>
+
+<file path="pages/Result.tsx">
+import { ChevronLeft } from "lucide-react";
+import { useResult } from "@/features/result/engines/useResult";
+import ResultHeroSection from "@/features/result/components/ResultHeroSection";
+import CoreAnalyticsBento from "@/features/result/components/CoreAnalyticsBento";
+import NarrativeSection from "@/features/result/components/NarrativeSection";
+import SpecialStarSection from "@/features/result/components/SpecialStarSection";
+import ResultActionFooter from "@/features/result/components/ResultActionFooter";
+
+export default function Result() {
+  const {
+    navigate,
+    captureRef,
+    isExporting,
+    stageSize,
+    userCode,
+    scores,
+    originData,
+    persona,
+    narratives,
+    assembledScores,
+    yinRatio,
+    yangRatio,
+    specialStars,
+    handleSaveImage,
+    handleShare,
+  } = useResult();
+
+  if (!userCode || !originData || !persona || !narratives) return null;
+
+  return (
+    <main className="layout-page justify-start overflow-y-auto scrollbar-hide pb-24">
+      <header className="absolute top-6 left-6 z-20">
+        <button onClick={() => navigate("/")} className="btn-icon">
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+      </header>
+
+      <div className="decor-moon-bg" />
+      <div className="decor-stone-bg" />
+
+      <div
+        ref={captureRef}
+        className="w-full flex flex-col items-center pt-[10vh] px-6 z-10 relative max-w-[650px] mx-auto"
+      >
+        <ResultHeroSection persona={persona} />
+
+        <CoreAnalyticsBento
+          stageSize={stageSize}
+          scores={scores}
+          assembledScores={assembledScores}
+          originData={originData}
+          yinRatio={yinRatio}
+          yangRatio={yangRatio}
+        />
+
+        <NarrativeSection narratives={narratives} />
+        <SpecialStarSection specialStars={specialStars} />
+      </div>
+
+      <ResultActionFooter
+        isExporting={isExporting}
+        onSave={handleSaveImage}
+        onShare={handleShare}
+        onSynergy={() => navigate("/synergy")}
+      />
+    </main>
+  );
+}
+</file>
+
+<file path="pages/Synergy.tsx">
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, Info, Zap } from "lucide-react";
+import WaveCanvas from "@/shared/visual/WaveCanvas";
+import SynergyEmptyState from "@/features/synergy/components/SynergyEmptyState";
+import SynergyReport from "@/features/synergy/components/SynergyReport";
+import { useSynergy } from "@/features/synergy/engines/useSynergy";
+import SynergyDebugPanel from "@/features/synergy/components/SynergyDebugPanel";
+import SynergyInputBox from "@/features/synergy/components/SynergyInputBox";
+import SynergyScoreBox from "@/features/synergy/components/SynergyScoreBox";
+
+export default function Synergy() {
+  const navigate = useNavigate();
+  const [stageSize, setStageSize] = useState({ w: 320, h: 140 });
+
+  useEffect(() => {
+    const calculateSize = () => {
+      const isDesktop = window.innerWidth >= 1024;
+      const maxWidth = isDesktop
+        ? window.innerWidth * 0.28
+        : window.innerWidth * 0.75;
+      const finalW = Math.floor(Math.min(maxWidth, 400));
+      setStageSize({ w: finalW, h: Math.floor(finalW / 2.2) });
+    };
+    calculateSize();
+    window.addEventListener("resize", calculateSize);
+    return () => window.removeEventListener("resize", calculateSize);
+  }, []);
+
+  const synergyState = useSynergy();
+  const {
+    myCode,
+    myScores,
+    typingCode,
+    setTypingCode,
+    viewMode,
+    setViewMode,
+    error,
+    isMatched,
+    activePartnerScores,
+    developerMode,
+    clickCount,
+    comparisonData,
+    syncRate,
+    synergyData,
+    advancedReadingText,
+    myParsedSaju,
+    partnerParsedSaju,
+    masterDebugData,
+    handleMatch,
+    handleReset,
+    toggleDevMode,
+  } = synergyState;
+
+  return (
+    <main className="layout-page justify-start">
+      <div className="decor-moon-bg" />
+      <div className="decor-stone-bg" />
+
+      <header className="absolute top-6 left-6 z-20 flex items-center gap-3">
+        <button
+          onClick={() => navigate(-1)}
+          className="btn-icon"
+          aria-label="뒤로가기"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+      </header>
+
+      <section className="relative z-10 w-full h-full flex flex-col min-h-0 items-center overflow-y-auto scrollbar-hide px-6 pt-[12vh] pb-16">
+        {!myCode ? (
+          <SynergyEmptyState
+            onNavigateTest={() => navigate("/test")}
+            onNavigateHome={() => navigate("/")}
+          />
+        ) : (
+          <div className="w-full max-w-[1050px] grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-5 w-full flex flex-col gap-5 max-w-[450px] mx-auto">
+              <header className="text-center lg:text-left">
+                <span className="text-subtitle">Moonlight Harmony</span>
+                <h1 className="text-hero mt-1">달빛의 공명</h1>
+              </header>
+
+              <div className="w-full rounded-[2rem] border border-stone-200/60 bg-white/40 backdrop-blur-md overflow-hidden flex flex-col items-center justify-center p-5 shadow-sm group relative">
+                <div
+                  style={{ width: stageSize.w, height: stageSize.h }}
+                  className="flex items-center justify-center relative z-10"
+                >
+                  {myScores && (
+                    <WaveCanvas
+                      myScores={myScores}
+                      partnerScores={
+                        activePartnerScores ?? {
+                          wood: 0,
+                          fire: 0,
+                          earth: 0,
+                          metal: 0,
+                          water: 0,
+                        }
+                      }
+                      width={stageSize.w}
+                      height={stageSize.h}
+                    />
+                  )}
+                </div>
+                <div className="absolute bottom-3 inset-x-4 z-25 flex items-center justify-center gap-1.5 text-[10px] text-stone-400 font-medium bg-white/80 backdrop-blur-sm py-1 px-3 rounded-full border border-stone-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  <Info className="w-3.5 h-3.5 text-stone-400" />
+                  <span>두 사람의 주파수가 교차하며 공명합니다</span>
+                </div>
+              </div>
+
+              <AnimatePresence>
+                {developerMode && isMatched && (
+                  <SynergyDebugPanel masterDebugData={masterDebugData} />
+                )}
+              </AnimatePresence>
+
+              <AnimatePresence mode="wait">
+                {!isMatched ? (
+                  <SynergyInputBox
+                    typingCode={typingCode}
+                    setTypingCode={setTypingCode}
+                    handleMatch={handleMatch}
+                    error={error}
+                    toggleDevMode={toggleDevMode}
+                    developerMode={developerMode}
+                    clickCount={clickCount}
+                  />
+                ) : (
+                  <SynergyScoreBox
+                    viewMode={viewMode}
+                    syncRate={syncRate}
+                    synergyScore={synergyData?.score}
+                    onReset={handleReset}
+                  />
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="lg:col-span-7 w-full flex flex-col min-h-0">
+              <AnimatePresence mode="wait">
+                {!isMatched ? (
+                  <motion.div
+                    key="waiting"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="surface-glass border-dashed border-stone-200/80 bg-white/30 backdrop-blur-xl flex flex-col items-center justify-center p-16 min-h-[380px] text-center"
+                  >
+                    <p className="text-xs uppercase font-mono tracking-[0.3em] font-bold text-stone-300 animate-pulse">
+                      Ready for Moonlight
+                    </p>
+                  </motion.div>
+                ) : (
+                  <div className="w-full flex flex-col min-h-0">
+                    <SynergyReport
+                      viewMode={viewMode}
+                      setViewMode={setViewMode}
+                      comparisonData={comparisonData}
+                      myOriginData={myParsedSaju}
+                      partnerOriginData={partnerParsedSaju}
+                      synergyData={synergyData}
+                      advancedReadingText={advancedReadingText}
+                    />
+                  </div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        )}
+      </section>
+    </main>
+  );
+}
+</file>
+
+<file path="pages/Test.tsx">
+import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { useHexCompress } from "@/shared/hooks/useHexCompress";
+import masterDB from "@/shared/data/questions_db.json";
+import { useTestProgress } from "@/features/test/engines/useTestProgress";
+import TestProgressBar from "@/features/test/components/TestProgressBar";
+import QuestionCard from "@/features/test/components/QuestionCard";
+
+const questions = masterDB.questions as unknown as Question[];
+
+export default function Test() {
+  const navigate = useNavigate();
+  const { compress } = useHexCompress();
+
+  const handleComplete = (finalAnswers: number[]) => {
+    const code = compress(finalAnswers);
+    localStorage.setItem("user_frequency_code", code);
+    navigate("/result", { state: { userCode: code }, replace: true });
+  };
+
+  const handleExit = () => navigate("/");
+
+  const {
+    currentStep,
+    answers,
+    isTransitioning,
+    handleAnswer,
+    handleBack,
+    releaseLock,
+  } = useTestProgress(questions.length, handleComplete, handleExit);
+
+  const currentQuestion = questions[currentStep];
+
+  return (
+    <main
+      className={`layout-page justify-start px-6 ${isTransitioning ? "pointer-events-none" : ""}`}
+    >
+      <div className="decor-moon-bg" />
+      <div className="decor-stone-bg" />
+
+      <TestProgressBar
+        currentStep={currentStep}
+        totalSteps={questions.length}
+        isTransitioning={isTransitioning}
+        onBack={handleBack}
+      />
+
+      <section className="w-full flex-1 flex items-start justify-center pt-[6vh]">
+        <AnimatePresence mode="wait">
+          <QuestionCard
+            key={currentStep}
+            currentStep={currentStep}
+            totalSteps={questions.length}
+            question={currentQuestion}
+            currentAnswer={answers[currentStep]}
+            isTransitioning={isTransitioning}
+            onAnswer={handleAnswer}
+            onAnimationComplete={releaseLock}
+          />
+        </AnimatePresence>
+      </section>
+    </main>
+  );
+}
+</file>
+
+<file path="shared/data/questions_db.json">
+{
   "questions": [
     {
       "id": 1,
@@ -334,8 +3136,54 @@ export default function AppLayout() {
         { "label": "새로운 길을 개척하고 판을 바꾸려는 돌파력", "value": 1, "impact": { "wood": 2, "metal": 1, "earth": -1, "yang": 2, "action": 2, "receptivity": -1 } }
       ]
     }
-  ],
+  ]
+}
+</file>
 
+<file path="shared/data/synergy_db.json">
+{
+  "synergy": {
+    "description": "달빛 공명 역학: 두 파동이 교차할 때 발생하는 시너지",
+    "intros": [
+      "우주를 유랑하던 두 개의 고유한 달빛이 마침내 하나의 궤도에서 교차했습니다.",
+      "서로 다른 시공간에 뿌리를 둔 두 은은한 파동이, 보이지 않는 달빛의 이끌림으로 마주하게 된 순간입니다.",
+      "각자가 품고 태어난 고유의 우주가 충돌하고 융화되는, 아름답고도 은밀한 달빛 서사의 첫 페이지입니다."
+    ],
+    "syncReadings": {
+      "high": [
+        "{syncRate}%라는 압도적인 싱크로율은 두 분이 마치 호수에 비친 서로를 마주 본 듯 닮아 있음을 증명합니다. 굳이 긴 문장으로 주파수를 맞추지 않아도, 침묵 속에서 서로의 다음 궤도를 읽어낼 수 있는 깊은 영혼의 교감입니다.",
+        "마치 오랫동안 잃어버렸던 자신의 반쪽 달을 찾은 듯한 {syncRate}%의 일치율입니다. 같은 주파수의 빛을 공유하기에 감정의 소모가 적고, 함께 궤도를 도는 시간 자체가 완전한 영혼의 안식처가 되어줍니다."
+      ],
+      "mid": [
+        "{syncRate}%의 유사도는 두 분 사이에 가장 이상적이고 다정한 '공감의 궤도 거리'가 존재함을 의미합니다. 서로를 온전히 이해하면서도 각자의 고유한 빛깔을 잃지 않는 건강한 균형감이 돋보입니다.",
+        "서로의 고유한 궤도를 함부로 침범하지 않으면서도, 중력이 필요할 땐 완벽하게 손을 맞잡을 수 있는 {syncRate}%의 밸런스입니다. 성숙한 존중을 바탕으로 천천히 서로의 빛에 스며드는 관계입니다."
+      ],
+      "low": [
+        "{syncRate}%라는 수치는 오히려 두 분이 서로에게 완벽한 '미지의 우주'가 되어줄 수 있음을 뜻합니다. 내가 결코 보지 못했던 새로운 차원의 달빛을 상대방의 궤도를 통해 발견하게 되는 자극적인 만남입니다.",
+        "같은 궤도를 도는 위성이 아니라, 서로 다른 은하계가 충돌하며 새로운 초신성을 탄생시키는 {syncRate}%의 이질적 조화입니다. 낯섦이 경이로움으로 바뀌는 순간, 우주에서 가장 견고한 중력이 생겨납니다."
+      ]
+    },
+    "synergyReadings": {
+      "상생": [
+        "두 파동의 교차점을 짚어보면, 서로의 빛을 끝없이 순환시키는 '무한 동력'의 축복이 깃들어 있습니다. 한쪽의 헌신적인 파동이 다른 쪽의 궤도를 폭발적으로 확장시키고, 그 빛이 다시 상대방을 감싸 안는 완벽한 우주적 선순환을 그리게 됩니다."
+      ],
+      "상극": [
+        "두 궤도는 서로의 파동을 팽팽하게 견제하고 제어하는 강렬한 중력을 당기고 있습니다. 이는 파괴를 위함이 아닙니다. 이기적이거나 나태해진 궤도를 서늘하게 일깨워주며, 흐릿해진 서로의 빛을 가장 눈부신 보석으로 세공해 내는 찬란한 성장의 담금질입니다."
+      ],
+      "균형": [
+        "두 분은 동일한 기운의 파동을 나누어 가진, 같은 은하에서 나고 자란 평행 우주의 별과 같습니다. 애써 주파수를 맞추려 치장할 필요 없이, 그저 곁에 머물며 궤도를 도는 것만으로도 영혼이 위로받는 가장 평온하고 짙은 결속력을 자랑합니다."
+      ]
+    },
+    "outros": [
+      "이 달빛의 공명은 단발성으로 끝나는 것이 아니라, 시간이 지날수록 서로의 궤도에 더 깊고 단단한 중력을 형성할 것입니다.",
+      "서로를 엮어주는 보이지 않는 달빛의 방향을 의심하지 마세요. 두 분의 다름은 훌륭한 빛의 스펙트럼이 되고, 같음은 든든한 정원의 지반이 될 것입니다."
+    ]
+  }
+}
+</file>
+
+<file path="shared/data/tongbyeon_db.json">
+{
   "advanced": {
     "description": "API 독립형 초정밀 사주 롱폼(Long-form) 통변 매트릭스",
         "0_ten_gods": {
@@ -641,55 +3489,17 @@ export default function AppLayout() {
         }
         }
     }
-  },
-
-  "synergy": {
-    "description": "달빛 공명 역학: 두 파동이 교차할 때 발생하는 시너지",
-    "intros": [
-      "우주를 유랑하던 두 개의 고유한 달빛이 마침내 하나의 궤도에서 교차했습니다.",
-      "서로 다른 시공간에 뿌리를 둔 두 은은한 파동이, 보이지 않는 달빛의 이끌림으로 마주하게 된 순간입니다.",
-      "각자가 품고 태어난 고유의 우주가 충돌하고 융화되는, 아름답고도 은밀한 달빛 서사의 첫 페이지입니다."
-    ],
-    "syncReadings": {
-      "high": [
-        "{syncRate}%라는 압도적인 싱크로율은 두 분이 마치 호수에 비친 서로를 마주 본 듯 닮아 있음을 증명합니다. 굳이 긴 문장으로 주파수를 맞추지 않아도, 침묵 속에서 서로의 다음 궤도를 읽어낼 수 있는 깊은 영혼의 교감입니다.",
-        "마치 오랫동안 잃어버렸던 자신의 반쪽 달을 찾은 듯한 {syncRate}%의 일치율입니다. 같은 주파수의 빛을 공유하기에 감정의 소모가 적고, 함께 궤도를 도는 시간 자체가 완전한 영혼의 안식처가 되어줍니다."
-      ],
-      "mid": [
-        "{syncRate}%의 유사도는 두 분 사이에 가장 이상적이고 다정한 '공감의 궤도 거리'가 존재함을 의미합니다. 서로를 온전히 이해하면서도 각자의 고유한 빛깔을 잃지 않는 건강한 균형감이 돋보입니다.",
-        "서로의 고유한 궤도를 함부로 침범하지 않으면서도, 중력이 필요할 땐 완벽하게 손을 맞잡을 수 있는 {syncRate}%의 밸런스입니다. 성숙한 존중을 바탕으로 천천히 서로의 빛에 스며드는 관계입니다."
-      ],
-      "low": [
-        "{syncRate}%라는 수치는 오히려 두 분이 서로에게 완벽한 '미지의 우주'가 되어줄 수 있음을 뜻합니다. 내가 결코 보지 못했던 새로운 차원의 달빛을 상대방의 궤도를 통해 발견하게 되는 자극적인 만남입니다.",
-        "같은 궤도를 도는 위성이 아니라, 서로 다른 은하계가 충돌하며 새로운 초신성을 탄생시키는 {syncRate}%의 이질적 조화입니다. 낯섦이 경이로움으로 바뀌는 순간, 우주에서 가장 견고한 중력이 생겨납니다."
-      ]
-    },
-    "synergyReadings": {
-      "상생": [
-        "두 파동의 교차점을 짚어보면, 서로의 빛을 끝없이 순환시키는 '무한 동력'의 축복이 깃들어 있습니다. 한쪽의 헌신적인 파동이 다른 쪽의 궤도를 폭발적으로 확장시키고, 그 빛이 다시 상대방을 감싸 안는 완벽한 우주적 선순환을 그리게 됩니다."
-      ],
-      "상극": [
-        "두 궤도는 서로의 파동을 팽팽하게 견제하고 제어하는 강렬한 중력을 당기고 있습니다. 이는 파괴를 위함이 아닙니다. 이기적이거나 나태해진 궤도를 서늘하게 일깨워주며, 흐릿해진 서로의 빛을 가장 눈부신 보석으로 세공해 내는 찬란한 성장의 담금질입니다."
-      ],
-      "균형": [
-        "두 분은 동일한 기운의 파동을 나누어 가진, 같은 은하에서 나고 자란 평행 우주의 별과 같습니다. 애써 주파수를 맞추려 치장할 필요 없이, 그저 곁에 머물며 궤도를 도는 것만으로도 영혼이 위로받는 가장 평온하고 짙은 결속력을 자랑합니다."
-      ]
-    },
-    "outros": [
-      "이 달빛의 공명은 단발성으로 끝나는 것이 아니라, 시간이 지날수록 서로의 궤도에 더 깊고 단단한 중력을 형성할 것입니다.",
-      "서로를 엮어주는 보이지 않는 달빛의 방향을 의심하지 마세요. 두 분의 다름은 훌륭한 빛의 스펙트럼이 되고, 같음은 든든한 정원의 지반이 될 것입니다."
-    ]
   }
 }
 </file>
 
-<file path="hooks/useHexCompress.ts">
-import masterDB from '../data/moonlight_db.json';
+<file path="shared/hooks/useHexCompress.ts">
+import masterDB from "../data/questions_db.json";
 
 export const useHexCompress = () => {
   const compress = (answers: number[]): string => {
-    if (answers.length !== 24) return "000000"; 
-    
+    if (answers.length !== 24) return "000000";
+
     let hexResult = "";
     for (let i = 0; i < 24; i += 4) {
       const chunk = answers.slice(i, i + 4).join("");
@@ -700,8 +3510,8 @@ export const useHexCompress = () => {
   };
 
   const decompress = (hex: string): number[] => {
-    if (hex.length !== 6) return Array(24).fill(0); 
-    
+    if (hex.length !== 6) return Array(24).fill(0);
+
     const binaryArray: number[] = [];
     for (let i = 0; i < 6; i++) {
       const binaryString = parseInt(hex[i], 16).toString(2).padStart(4, "0");
@@ -712,31 +3522,39 @@ export const useHexCompress = () => {
   };
 
   const getElementScores = (answers: number[]): ElementScores => {
-    
-    const scores: ElementScores = { 
-      wood: 10, fire: 10, earth: 10, metal: 10, water: 10,
-      yin: 10, yang: 10, action: 10, receptivity: 10 
+    const scores: ElementScores = {
+      wood: 10,
+      fire: 10,
+      earth: 10,
+      metal: 10,
+      water: 10,
+      yin: 10,
+      yang: 10,
+      action: 10,
+      receptivity: 10,
     };
-    
+
     const questions = masterDB.questions;
 
     answers.forEach((ans, idx) => {
       const question = questions[idx];
       if (!question) return;
 
-      const selectedOption = question.options.find((opt: Option) => opt.value === ans);
-      
+      const selectedOption = question.options.find(
+        (opt: Option) => opt.value === ans,
+      );
+
       if (selectedOption && selectedOption.impact) {
         Object.entries(selectedOption.impact).forEach(([key, value]) => {
           const k = key as keyof ElementScores;
           if (scores[k] !== undefined) {
-            scores[k] += (value as number);
+            scores[k] += value as number;
           }
         });
       }
     });
-    
-    (Object.keys(scores) as Array<keyof ElementScores>).forEach(key => {
+
+    (Object.keys(scores) as Array<keyof ElementScores>).forEach((key) => {
       if (scores[key] < 0) scores[key] = 0;
     });
 
@@ -747,79 +3565,7 @@ export const useHexCompress = () => {
 };
 </file>
 
-<file path="main.tsx">
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
-</file>
-
-<file path="pages/Home.tsx">
-export default function Home () {
-  return (
-  <>
-    <h1>Home Component</h1>
-  </>
- );
-}
-</file>
-
-<file path="pages/RealSaju.tsx">
-export default function RealSaju () {
-  return (
-  <>
-    <h1>RealSaju Component</h1>
-  </>
- );
-}
-</file>
-
-<file path="pages/Result.tsx">
-export default function Result () {
-  return (
-  <>
-    <h1>Result Component</h1>
-  </>
- );
-}
-</file>
-
-<file path="pages/Sync.tsx">
-export default function Sync () {
-  return (
-  <>
-    <h1>Sync Component</h1>
-  </>
- );
-}
-</file>
-
-<file path="pages/Synergy.tsx">
-export default function Synergy () {
-  return (
-  <>
-    <h1>Synergy Component</h1>
-  </>
- );
-}
-</file>
-
-<file path="pages/Test.tsx">
-export default function Test () {
-  return (
-  <>
-    <h1>Test Component</h1>
-  </>
- );
-}
-</file>
-
-<file path="types/global.d.ts">
+<file path="shared/types/global.d.ts">
 export {};
 
 declare global {
@@ -835,7 +3581,6 @@ declare global {
 
   interface Option {
     label: string; 
-    // 🚀 수정: value가 number 뿐만 아니라 string이나 배열도 가능하도록 확장
     value: number | string | number[]; 
     impact?: { 
       [key in ElementType | 'yin' | 'yang' | 'action' | 'receptivity']?: number; 
@@ -899,7 +3644,7 @@ declare global {
   }
 
   interface SajuAnalysis {
-    pillars: string[]; // ['甲子', '乙丑', ...]
+    pillars: string[];
     analytics: SajuAnalytics;
   }
 
@@ -911,7 +3656,6 @@ declare global {
     detail: string;
   }
 
-  // 6. [DB 규격] 통변 엔진용 마스터 데이터셋
   interface MatrixAdvanced {
     "0_ten_gods": Record<string, { keyword: string; desc: string }>;
     "0_special_stars": Record<string, { keyword: string; desc: string }>;
@@ -923,12 +3667,677 @@ declare global {
 }
 </file>
 
-<file path="utils/reverseEngine.ts">
+<file path="shared/ui/Button.tsx">
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  variant?: 'primary' | 'secondary' | 'icon';
+  className?: string;
+}
+
+export default function Button({ children, variant = 'primary', className = '', ...props }: ButtonProps) {
+  const baseStyles = "transition-all active:scale-[0.97] flex items-center justify-center";
+  
+  const variants = {
+    primary: "w-full h-[58px] rounded-full bg-[#1C1C1E] text-white font-bold text-[14px] tracking-[0.2em] shadow-lg uppercase mt-2",
+    secondary: "w-full h-[58px] rounded-full bg-white border border-gray-200 text-[#1C1C1E] font-bold text-[13px] tracking-widest shadow-sm uppercase mt-2",
+    icon: "w-10 h-10 bg-white/50 backdrop-blur-md rounded-full border border-white shadow-sm text-[#1C1C1E]"
+  };
+
+  return (
+    <button className={`${baseStyles} ${variants[variant]} ${className}`} {...props}>
+      {children}
+    </button>
+  );
+}
 </file>
 
-<file path="utils/tongbyeonEngine.ts">
+<file path="shared/utils/astronomyEngine.ts">
+const deg2rad = (deg: number) => (deg * Math.PI) / 180.0;
 
+export function getSunLongitude(date: Date): number {
+  const jd = (date.getTime() / 86400000.0) + 2440587.5;
+  const t = (jd - 2451545.0) / 36525.0;
+  let l0 = 280.46646 + 36000.76983 * t + 0.0003032 * t * t;
+  l0 = l0 % 360.0;
+  if (l0 < 0) l0 += 360.0;
+
+  let m = 357.52911 + 35999.05029 * t - 0.0001537 * t * t;
+  m = m % 360.0;
+  if (m < 0) m += 360.0;
+
+  const mRad = deg2rad(m);
+
+  const c =
+    (1.914602 - 0.004817 * t - 0.000014 * t * t) * Math.sin(mRad) +
+    (0.019993 - 0.000101 * t) * Math.sin(2 * mRad) +
+    0.000289 * Math.sin(3 * mRad);
+
+  const trueLon = l0 + c;
+
+  const omega = 125.04 - 1934.136 * t;
+  const omegaRad = deg2rad(omega);
+  let apparentLon = trueLon - 0.00569 - 0.00478 * Math.sin(omegaRad);
+
+  apparentLon = apparentLon % 360.0;
+  if (apparentLon < 0) apparentLon += 360.0;
+
+  return apparentLon;
+}
+</file>
+
+<file path="shared/utils/destinyEngine.ts">
+import { parseSajuData } from '@/features/saju/engines/sajuParser';
+
+export interface RealSajuResult {
+  normalizedTime: string;
+  pillars: string[];
+}
+
+export const BRANCH_TIME_MAP: Record<string, string> = { /* ... */ };
+const ELEMENT_METADATA: ElementResult[] = [
+  { id: 'wood', label: 'WOOD', hanja: '木', name: '새벽의 민트빛', color: '#AEECEF', bg: 'transparent', keyword: '성장하고 뻗어나가는 달빛', desc: '어둠을 뚫고 피어나는 싱그러운 생명력의 빛깔입니다.' },
+  { id: 'fire', label: 'FIRE', hanja: '火', name: '해질녘의 핑크빛', color: '#FFB8D0', bg: 'transparent', keyword: '열정적으로 확산하는 달빛', desc: '주변을 따스하게 물들이며 확산하는 온기의 빛깔입니다.' },
+  { id: 'earth', label: 'EARTH', hanja: '土', name: '포근한 보름달빛', color: '#FDE08B', bg: 'transparent', keyword: '모든 것을 품는 단단한 달빛', desc: '어떤 감정이든 묵묵히 안아주는 포용과 안정의 빛깔입니다.' },
+  { id: 'metal', label: 'METAL', hanja: '金', name: '맑고 투명한 은빛', color: '#FFFFFF', bg: 'transparent', keyword: '단호하고 선명한 달빛', desc: '흔들림 없이 투명하게 본질을 꿰뚫어보는 직관의 빛깔입니다.' },
+  { id: 'water', label: 'WATER', hanja: '水', name: '심연의 라벤더빛', color: '#B5B9FF', bg: 'transparent', keyword: '지혜롭게 스며드는 달빛', desc: '고요하고 깊은 심연에서 조용히 일렁이는 지혜의 빛깔입니다.' }
+];
+
+const stems = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+const branches = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+
+const DST_PERIODS = [
+  { start: "1948-06-01T00:00:00Z", end: "1948-09-13T00:00:00Z" },
+  { start: "1949-04-03T00:00:00Z", end: "1949-09-11T00:00:00Z" },
+  { start: "1950-04-01T00:00:00Z", end: "1950-09-10T00:00:00Z" },
+  { start: "1951-05-06T00:00:00Z", end: "1951-09-09T00:00:00Z" },
+  { start: "1955-05-05T00:00:00Z", end: "1955-09-09T00:00:00Z" },
+  { start: "1956-05-20T00:00:00Z", end: "1956-09-30T00:00:00Z" },
+  { start: "1957-05-05T00:00:00Z", end: "1957-09-22T00:00:00Z" },
+  { start: "1958-05-04T00:00:00Z", end: "1958-09-21T00:00:00Z" },
+  { start: "1959-05-03T00:00:00Z", end: "1959-09-20T00:00:00Z" },
+  { start: "1960-05-01T00:00:00Z", end: "1960-09-18T00:00:00Z" },
+  { start: "1987-05-10T00:00:00Z", end: "1987-10-11T00:00:00Z" },
+  { start: "1988-05-08T00:00:00Z", end: "1988-10-09T00:00:00Z" }
+];
+
+const deg2rad = (deg: number): number => (deg * Math.PI) / 180.0;
+
+function getSunLongitude(date: Date): number {
+  const jd = (date.getTime() / 86400000.0) + 2440587.5;
+  const t = (jd - 2451545.0) / 36525.0;
+
+  let l0 = 280.46646 + 36000.76983 * t + 0.0003032 * t * t;
+  l0 = l0 % 360.0;
+  if (l0 < 0) l0 += 360.0;
+
+  let m = 357.52911 + 35999.05029 * t - 0.0001537 * t * t;
+  m = m % 360.0;
+  if (m < 0) m += 360.0;
+
+  const mRad = deg2rad(m);
+  const c =
+    (1.914602 - 0.004817 * t - 0.000014 * t * t) * Math.sin(mRad) +
+    (0.019993 - 0.000101 * t) * Math.sin(2 * mRad) +
+    0.000289 * Math.sin(3 * mRad);
+
+  const trueLon = l0 + c;
+  const omega = 125.04 - 1934.136 * t;
+  const omegaRad = deg2rad(omega);
+  let apparentLon = trueLon - 0.00569 - 0.00478 * Math.sin(omegaRad);
+
+  apparentLon = apparentLon % 360.0;
+  if (apparentLon < 0) apparentLon += 360.0;
+
+  return apparentLon;
+}
+
+export function normalizeTime(inputDate: Date, userLongitude: number = 127.5): Date {
+  let correctedTime = new Date(inputDate.getTime());
+
+  for (const period of DST_PERIODS) {
+    const start = new Date(period.start);
+    const end = new Date(period.end);
+    if (correctedTime >= start && correctedTime <= end) {
+      correctedTime = new Date(correctedTime.getTime() - 60 * 60 * 1000);
+      break;
+    }
+  }
+
+  const isHistorical1275 = correctedTime >= new Date('1954-03-21T00:00:00Z') &&
+                           correctedTime <= new Date('1961-08-09T23:59:59Z');
+
+  if (!isHistorical1275) {
+    const KST_LON = 135.0;
+    const lonDiffMinutes = (KST_LON - userLongitude) * 4;
+    correctedTime = new Date(correctedTime.getTime() - lonDiffMinutes * 60 * 1000);
+  }
+
+  return correctedTime;
+}
+
+const getDayGanjiIdx = (d: Date): number => {
+  const diff = Math.floor((d.getTime() - new Date(1900, 0, 1).getTime()) / 86400000);
+  return (diff + 10) % 60;
+};
+
+export function calculateRealSaju(birthDate: Date, longitude: number = 127.5): RealSajuResult {
+  const trueTime = normalizeTime(birthDate, longitude);
+  const h = trueTime.getHours();
+  const adjustedDate = new Date(trueTime.getTime());
+  
+  if (h >= 23) adjustedDate.setDate(adjustedDate.getDate() + 1);
+
+  const dIdx = getDayGanjiIdx(adjustedDate);
+  const dayStemIdx = dIdx % 10;
+  const currentSolarLon = getSunLongitude(adjustedDate); 
+  
+  let sYear = adjustedDate.getFullYear();
+  if (adjustedDate.getMonth() <= 2 && currentSolarLon < 315 && currentSolarLon >= 270) {
+    sYear -= 1;
+  }
+  const yearStemIdx = (sYear - 4 + 1000) % 10;
+  const yearBranchIdx = (sYear - 4 + 1200) % 12;
+
+  const shiftedLon = (currentSolarLon + 45) % 360; 
+  const monthBranchIdx = (Math.floor(shiftedLon / 30) + 2) % 12;
+  const monthStemIdx = ((yearStemIdx % 5) * 2 + monthBranchIdx) % 10;
+
+  const hourBranchIdx = Math.floor((trueTime.getHours() + 1) / 2) % 12;
+  const hourStemIdx = ((dayStemIdx % 5) * 2 + hourBranchIdx) % 10;
+
+  return {
+    normalizedTime: trueTime.toISOString(),
+    pillars: [
+      `${stems[yearStemIdx]}${branches[yearBranchIdx]}`,
+      `${stems[monthStemIdx]}${branches[monthBranchIdx]}`,
+      `${stems[dayStemIdx]}${branches[dIdx % 12]}`,
+      `${stems[hourStemIdx]}${branches[hourBranchIdx]}`
+    ]
+  };
+}
+
+export interface PerfectSajuOutput {
+  date: string;
+  pillars: string[];
+  analysis: SajuAnalysis;
+  element: ElementResult & { value: number; fullLabel: string };
+  allElements: Array<ElementResult & { value: number; fullLabel: string }>;
+  chartData: { values: number[]; colors: string[] };
+}
+
+interface MoonlightSajuData {
+  mainElement: 'wood' | 'fire' | 'earth' | 'metal' | 'water';
+  date: string;
+  pillars: string[];
+}
+
+const MOONLIGHT_DATA: MoonlightSajuData[] = [
+  { mainElement: 'wood', date: '푸르른 생명의 태동', pillars: ["甲子", "丙寅", "戊辰", "庚午"] },
+  { mainElement: 'fire', date: '타오르는 열정의 궤적', pillars: ["丙午", "丁巳", "己未", "辛酉"] },
+  { mainElement: 'earth', date: '만물을 품는 고요한 대지', pillars: ["戊辰", "己丑", "庚辰", "壬辰"] },
+  { mainElement: 'metal', date: '차갑고 선명한 달빛의 칼날', pillars: ["庚申", "辛酉", "癸亥", "乙丑"] },
+  { mainElement: 'water', date: '심연을 흐르는 고요한 지혜', pillars: ["壬子", "癸亥", "甲寅", "丙辰"] }
+];
+
+export const calculatePerfectSajuOrigin = (elementScores: ElementScores): PerfectSajuOutput => {
+  const scoresArray = [
+    elementScores.wood,
+    elementScores.fire,
+    elementScores.earth,
+    elementScores.metal,
+    elementScores.water
+  ];
+
+  const dominant = scoresArray.reduce(
+    (max, val, idx) => (val > max.val ? { val, idx } : max),
+    { val: -1, idx: 0 }
+  );
+
+  let foundSaju = MOONLIGHT_DATA.find(data => {
+    const targetElement = ELEMENT_METADATA[dominant.idx].id;
+    return data.mainElement === targetElement; 
+  });
+
+  if (!foundSaju) {
+    foundSaju = { 
+      mainElement: 'wood',
+      date: "알 수 없는 시간의 틈", 
+      pillars: ["甲子", "丙寅", "戊辰", "庚午"] 
+    };
+  }
+
+  const analysisObj = parseSajuData(
+    foundSaju.pillars as [string, string, string, string], true, 2026);
+
+  const allElements = ELEMENT_METADATA.map((meta, idx) => ({
+    ...meta,
+    value: scoresArray[idx],
+    fullLabel: `${meta.name}`
+  }));
+
+  return {
+    date: foundSaju.date,
+    pillars: foundSaju.pillars,
+    analysis: analysisObj,
+    element: allElements[dominant.idx],
+    allElements,
+    chartData: {
+      values: scoresArray,
+      colors: ELEMENT_METADATA.map(m => m.color)
+    }
+  };
+};
+
+export interface SynergyResult {
+  score: number;
+  synergyType: '상생' | '상극' | '균형';
+  myDom: ElementResult;
+  partnerDom: ElementResult;
+}
+
+export const calculateElementalSynergy = (myScores: ElementScores, partnerScores: ElementScores): SynergyResult => {
+  const elements: (keyof ElementScores)[] = ['wood', 'fire', 'earth', 'metal', 'water'];
+  
+  const getDominantIdx = (s: ElementScores): number => {
+    let max = -1; let maxIdx = 0;
+    elements.forEach((el, i) => { if (s[el] > max) { max = s[el]; maxIdx = i; } });
+    return maxIdx;
+  };
+
+  const myDomIdx = getDominantIdx(myScores);
+  const pDomIdx = getDominantIdx(partnerScores);
+
+  const isGeneration = (pDomIdx === (myDomIdx + 1) % 5) || (myDomIdx === (pDomIdx + 1) % 5);
+  const isOvercoming = (pDomIdx === (myDomIdx + 2) % 5) || (myDomIdx === (pDomIdx + 2) % 5);
+
+  let score = 75;
+  let type: '상생' | '상극' | '균형' = '균형';
+
+  if (isGeneration) {
+    score = 95; type = '상생';
+  } else if (isOvercoming) {
+    score = 68; type = '상극';
+  } else if (myDomIdx === pDomIdx) {
+    score = 88; type = '균형';
+  }
+
+  elements.forEach((el) => { if (myScores[el] <= 1 && partnerScores[el] >= 3) score += 4; });
+
+  return {
+    score: Math.min(score, 100),
+    synergyType: type,
+    myDom: ELEMENT_METADATA[myDomIdx],
+    partnerDom: ELEMENT_METADATA[pDomIdx]
+  };
+};
+</file>
+
+<file path="shared/utils/geoUtils.ts">
+export async function getLongitudeByIP(): Promise<number> {
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    if (!response.ok) throw new Error('Network response was not ok');
+    
+    const data = await response.json();
+    
+    return data.longitude ? data.longitude : 127.0;
+  } catch (error) {
+    console.warn("IP 위치 획득 실패. 기본값(서울 경도 127도)으로 대체합니다.", error);
+    return 127.0;
+  }
+}
+</file>
+
+<file path="shared/visual/RadarChart.tsx">
+import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+
+interface RadarChartProps {
+  scores: number[];
+  colors?: string[];
+}
+
+const LIGHT_COLORS = [
+  '#5C7C59', // 木
+  '#E07A5F', // 火
+  '#D97706', // 土
+  '#78716C', // 金
+  '#4F6D7A'  // 水
+];
+
+export default function RadarChart({ scores }: RadarChartProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const elementsData = scores.slice(0, 5);
+  
+  const yin = scores[5] || 0;
+  const yang = scores[6] || 0;
+  const action = scores[7] || 0;
+  const receptivity = scores[8] || 0;
+
+  const yinYangTotal = yin + yang || 1;
+  const actionReceptTotal = action + receptivity || 1;
+  
+  const yangPercent = (yang / yinYangTotal) * 100;
+  const actionPercent = (action / actionReceptTotal) * 100;
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const DPR = window.devicePixelRatio || 1;
+    const SIZE = 800; 
+    canvas.width = SIZE * DPR;
+    canvas.height = SIZE * DPR;
+    ctx.scale(DPR, DPR);
+
+    const cx = SIZE / 2; 
+    const cy = SIZE / 2; 
+    const maxR = SIZE * 0.32; 
+    const angleStep = (Math.PI * 2) / 5; 
+
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    
+    const maxScore = Math.max(...elementsData, 4);
+
+    ctx.strokeStyle = 'rgba(120, 113, 108, 0.15)'; 
+    ctx.lineWidth = 1.5; 
+
+    for (let r = 1; r <= 4; r++) {
+      ctx.beginPath();
+      const currentR = maxR * (r / 4);
+      for (let i = 0; i < 5; i++) {
+        const angle = i * angleStep - Math.PI / 2; 
+        const x = cx + Math.cos(angle) * currentR;
+        const y = cy + Math.sin(angle) * currentR;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      const angle = i * angleStep - Math.PI / 2;
+      const x = cx + Math.cos(angle) * maxR;
+      const y = cy + Math.sin(angle) * maxR;
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(120, 113, 108, 0.1)';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.lineWidth = 3; 
+    ctx.lineJoin = 'round';
+    
+    elementsData.forEach((score, i) => {
+      const angle = i * angleStep - Math.PI / 2;
+      const currentR = maxR * (score / maxScore);
+      const x = cx + Math.cos(angle) * currentR;
+      const y = cy + Math.sin(angle) * currentR;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+
+    ctx.fillStyle = 'rgba(217, 119, 6, 0.08)'; 
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(217, 119, 6, 0.6)'; 
+    ctx.stroke();
+
+    const hanjaArr = ['木', '火', '土', '金', '水'];
+    const labelArr = ['WOOD', 'FIRE', 'EARTH', 'METAL', 'WATER'];
+
+    elementsData.forEach((score, i) => {
+      const angle = i * angleStep - Math.PI / 2;
+      const currentR = maxR * (score / maxScore);
+      const labelR = maxR + 85; 
+      
+      const px = cx + Math.cos(angle) * currentR;
+      const py = cy + Math.sin(angle) * currentR;
+      const lx = cx + Math.cos(angle) * labelR;
+      const ly = cy + Math.sin(angle) * labelR;
+
+      ctx.beginPath();
+      ctx.arc(px, py, 6, 0, Math.PI * 2); 
+      ctx.fillStyle = LIGHT_COLORS[i];
+      ctx.fill();
+      
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      ctx.shadowBlur = 0; 
+
+      ctx.font = 'bold 48px "Noto Serif KR", serif';
+      ctx.fillStyle = LIGHT_COLORS[i];
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle'; 
+      ctx.fillText(hanjaArr[i], lx, ly - 16);
+      
+      ctx.font = 'bold 22px "Space Mono", monospace';
+      ctx.fillStyle = 'rgba(120, 113, 108, 0.5)';
+      ctx.fillText(labelArr[i], lx, ly + 24);
+    });
+
+  }, [elementsData]);
+
+  return (
+    <div className="w-full bg-white border border-stone-200/60 rounded-[2.5rem] p-8 shadow-sm flex flex-col gap-8">
+      
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.85, filter: 'blur(4px)' }}
+        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full aspect-square max-w-[320px] mx-auto flex items-center justify-center"
+      >
+        <canvas 
+          ref={canvasRef} 
+          style={{ width: '100%', height: '100%' }}
+          className="block drop-shadow-[0_4px_12px_rgba(0,0,0,0.03)] object-contain"
+        />
+      </motion.div>
+
+      <div className="flex flex-col gap-5 pt-6 border-t border-stone-100">
+        <h3 className="text-center text-[11px] font-black text-stone-400 uppercase tracking-[0.4em] mb-2">
+          Core Tendency
+        </h3>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between text-[12px] font-bold">
+            <span className="text-stone-500">음 (Yin) <span className="font-normal text-stone-400 ml-1">{yin}</span></span>
+            <span className="text-amber-600"><span className="font-normal text-amber-400/80 mr-1">{yang}</span> 양 (Yang)</span>
+          </div>
+          <div className="h-3 w-full bg-stone-100 rounded-full overflow-hidden flex shadow-inner">
+            <motion.div 
+              initial={{ width: 0 }} 
+              animate={{ width: `${100 - yangPercent}%` }} 
+              transition={{ duration: 1, delay: 0.2 }}
+              className="h-full bg-stone-300"
+            />
+            <motion.div 
+              initial={{ width: 0 }} 
+              animate={{ width: `${yangPercent}%` }} 
+              transition={{ duration: 1, delay: 0.2 }}
+              className="h-full bg-amber-400"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between text-[12px] font-bold">
+            <span className="text-stone-500">수용성 <span className="font-normal text-stone-400 ml-1">{receptivity}</span></span>
+            <span className="text-amber-600"><span className="font-normal text-amber-400/80 mr-1">{action}</span> 행동력</span>
+          </div>
+          <div className="h-3 w-full bg-stone-100 rounded-full overflow-hidden flex shadow-inner">
+            <motion.div 
+              initial={{ width: 0 }} 
+              animate={{ width: `${100 - actionPercent}%` }} 
+              transition={{ duration: 1, delay: 0.4 }}
+              className="h-full bg-stone-300"
+            />
+            <motion.div 
+              initial={{ width: 0 }} 
+              animate={{ width: `${actionPercent}%` }} 
+              transition={{ duration: 1, delay: 0.4 }}
+              className="h-full bg-amber-400"
+            />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="shared/visual/WaveCanvas.tsx">
+// src/components/wave/WaveCanvas.tsx
+import { useEffect, useRef, memo } from 'react';
+
+interface WaveProps {
+  myScores: ElementScores;
+  partnerScores: ElementScores | null; 
+  width: number;
+  height: number;
+}
+
+const getDominantColor = (scores: ElementScores): string => {
+  const elements = [
+    { name: 'wood', value: scores.wood, color: '#5C7C59' }, 
+    { name: 'fire', value: scores.fire, color: '#E07A5F' },
+    { name: 'earth', value: scores.earth, color: '#D97706' },
+    { name: 'metal', value: scores.metal, color: '#78716C' },
+    { name: 'water', value: scores.water, color: '#4F6D7A' }
+  ];
+  elements.sort((a, b) => b.value - a.value);
+  return elements[0].color;
+};
+
+const WaveCanvas = memo(({ myScores, partnerScores, width, height }: WaveProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  
+  const timeRef = useRef(0);
+  const partnerAlphaRef = useRef(0);
+  const prevPartnerRef = useRef<ElementScores | null>(null);
+
+  useEffect(() => {
+    if (partnerScores) prevPartnerRef.current = partnerScores;
+  }, [partnerScores]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || width === 0 || height === 0) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationFrameId: number;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+
+    const drawMoonlight = (scores: ElementScores, color: string, alphaMult: number, w: number, h: number, cy: number, phaseOffset: number = 0) => {
+      
+      const weight = (s: number) => {
+        const normalized = s / 15;
+        return 0.6 + Math.min(normalized, 1.2); 
+      };
+      
+      const baseAmp = (h * 0.22) * weight(scores.fire);     
+      const baseFreq = 0.008 * weight(scores.wood);          
+      const baseSpeed = 0.01 * weight(scores.metal);       
+      const swirl = 1.2 * weight(scores.water);
+      const thickness = 1 + Math.min(scores.earth * 0.1, 1.5);
+
+      ctx.save();
+      
+      const layers = [
+        { a: baseAmp, f: baseFreq, p: timeRef.current + phaseOffset, lw: 14 * thickness, alpha: 0.08 * alphaMult, stroke: color },
+        { a: baseAmp * 0.95, f: baseFreq * 1.05, p: timeRef.current * 0.9 + phaseOffset, lw: 6 * thickness, alpha: 0.25 * alphaMult, stroke: color },
+        { a: baseAmp * 1.05, f: baseFreq * 0.95, p: timeRef.current * 1.1 + phaseOffset, lw: 1.5 * thickness, alpha: 0.8 * alphaMult, stroke: color }
+      ];
+
+      ctx.globalCompositeOperation = 'multiply';
+
+      layers.forEach((layer) => {
+        ctx.beginPath();
+        ctx.lineWidth = layer.lw;
+        ctx.strokeStyle = layer.stroke;
+        ctx.globalAlpha = layer.alpha;
+        
+        ctx.shadowBlur = 2;
+        ctx.shadowColor = layer.stroke;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.moveTo(0, cy);
+
+        for (let x = 0; x <= w; x += 2) {
+          const damping = Math.sin((x / w) * Math.PI); 
+          let y = Math.sin(x * layer.f + layer.p) * layer.a;
+          y += Math.sin(x * 0.02 + timeRef.current * 1.2) * (swirl * damping * 3); 
+          
+          ctx.lineTo(x, cy + (y * damping));
+        }
+        ctx.stroke();
+      });
+      ctx.restore();
+      
+      return baseSpeed;
+    };
+
+    const render = () => {
+      const centerY = height / 2;
+      ctx.clearRect(0, 0, width, height);
+      
+      const myColor = getDominantColor(myScores);
+      const mySpeed = drawMoonlight(myScores, myColor, 1, width, height, centerY, 0);
+
+      if (partnerScores) {
+        partnerAlphaRef.current = Math.min(partnerAlphaRef.current + 0.01, 1);
+      } else {
+        partnerAlphaRef.current = Math.max(partnerAlphaRef.current - 0.02, 0);
+      }
+
+      if (partnerAlphaRef.current > 0) {
+        const targetScores = partnerScores || prevPartnerRef.current;
+        if (targetScores) {
+          const partnerColor = getDominantColor(targetScores);
+          drawMoonlight(targetScores, partnerColor, partnerAlphaRef.current, width, height, centerY, Math.PI);
+        }
+      }
+
+      timeRef.current += mySpeed;
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [myScores, partnerScores, width, height]);
+
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="block pointer-events-none touch-none" 
+      style={{ backfaceVisibility: 'hidden' }} 
+    />
+  );
+});
+
+WaveCanvas.displayName = 'WaveCanvas';
+export default WaveCanvas;
 </file>
 
 </files>

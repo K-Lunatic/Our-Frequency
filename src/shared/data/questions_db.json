@@ -1,0 +1,220 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "target": "month",
+      "text": "둘 중 하나를 견뎌야 한다면 당신에게 더 고통스러운 것은?",
+      "options": [
+        { "label": "숨이 턱턱 막히는 한여름의 폭염", "value": 0, "impact": { "fire": -2, "water": 2, "yin": 1, "yang": -1, "receptivity": 1 } },
+        { "label": "뼛속까지 시린 한겨울의 칼바람", "value": 1, "impact": { "water": -2, "fire": 2, "yang": 1, "yin": -1, "action": 1 } }
+      ]
+    },
+    {
+      "id": 2,
+      "target": "month",
+      "text": "비가 며칠째 오는 장마철과, 바짝 마른 겨울철 중 당신의 컨디션이 더 나빠지는 때는?",
+      "options": [
+        { "label": "몸이 처지고 무거운 장마철의 눅눅함", "value": 0, "impact": { "earth": -1, "water": -1, "fire": 1, "yang": 1, "action": 1 } },
+        { "label": "피부가 당기고 따가운 겨울철의 건조함", "value": 1, "impact": { "fire": -1, "metal": -1, "water": 1, "yin": 1, "receptivity": 1 } }
+      ]
+    },
+    {
+      "id": 3,
+      "target": "month",
+      "text": "계절이 바뀔 때, 당신의 몸에 생기가 도는 시기는 언제인가요?",
+      "options": [
+        { "label": "새싹이 돋고 날이 따뜻해지는 봄과 여름", "value": 0, "impact": { "wood": 2, "fire": 1, "metal": -1, "yang": 2, "action": 1 } },
+        { "label": "찬 바람이 불고 서늘해지는 가을과 겨울", "value": 1, "impact": { "metal": 2, "water": 1, "wood": -1, "yin": 2, "receptivity": 1 } }
+      ]
+    },
+    {
+      "id": 4,
+      "target": "month",
+      "text": "목이 마를 때 본능적으로 먼저 찾게 되는 것은?",
+      "options": [
+        { "label": "속이 뻥 뚫리는 차가운 물", "value": 0, "impact": { "fire": 1, "water": -1, "yang": 1, "action": 1 } },
+        { "label": "자극이 적은 미지근하거나 따뜻한 물", "value": 1, "impact": { "water": 1, "fire": -1, "yin": 1, "receptivity": 1 } }
+      ]
+    },
+    {
+      "id": 5,
+      "target": "month",
+      "text": "잠자리에 들 때 당신의 체질에 더 가까운 것은?",
+      "options": [
+        { "label": "추위를 잘 타서 이불을 꼭 덮어야 안심이 된다", "value": 0, "impact": { "water": 1, "metal": 1, "fire": -1, "yin": 2, "receptivity": 1 } },
+        { "label": "답답한 걸 못 참아서 시원하게 자는 편이다", "value": 1, "impact": { "fire": 1, "wood": 1, "water": -1, "yang": 2, "action": 1 } }
+      ]
+    },
+    {
+      "id": 6,
+      "target": "month",
+      "text": "당신을 더 지치게 만드는 상황은?",
+      "options": [
+        { "label": "뜨거운 햇볕 아래서 계속 걸어야 할 때", "value": 0, "impact": { "fire": -2, "water": 1, "yin": 1, "receptivity": 1 } },
+        { "label": "서늘한 그늘이나 찬 바람을 계속 맞을 때", "value": 1, "impact": { "water": -2, "fire": 1, "yang": 1, "action": 1 } }
+      ]
+    },
+    {
+      "id": 7,
+      "target": "hour",
+      "text": "하루 중 정신이 가장 맑고 집중이 잘 되는 시간은 언제인가요?",
+      "options": [
+        { "label": "해가 떠 있고 세상이 움직이는 낮 시간", "value": 0, "impact": { "wood": 1, "fire": 2, "yang": 2, "action": 1 } },
+        { "label": "주변이 모두 고요해진 늦은 밤이나 새벽", "value": 1, "impact": { "metal": 1, "water": 2, "yin": 2, "receptivity": 1 } }
+      ]
+    },
+    {
+      "id": 8,
+      "target": "hour",
+      "text": "해야 할 중요한 일이 있을 때 당신의 업무 스타일은?",
+      "options": [
+        { "label": "닥치기 전까지 미루다 막판에 엄청난 집중력을 발휘한다", "value": 0, "impact": { "fire": 2, "wood": 1, "yang": 1, "action": 2, "receptivity": -1 } },
+        { "label": "매일 조금씩 꾸준히 페이스를 유지하며 진행한다", "value": 1, "impact": { "metal": 2, "water": 1, "earth": 1, "yin": 1, "receptivity": 2, "action": -1 } }
+      ]
+    },
+    {
+      "id": 9,
+      "target": "hour",
+      "text": "당신의 평소 수면 스타일은 어떤가요?",
+      "options": [
+        { "label": "작은 소리나 빛에도 쉽게 깬다", "value": 0, "impact": { "wood": 1, "fire": 1, "metal": 1, "action": 1, "yin": -1 } },
+        { "label": "한번 잠들면 누가 업어가도 모를 정도로 깊게 잔다", "value": 1, "impact": { "earth": 2, "water": 1, "yin": 1, "receptivity": 2 } }
+      ]
+    },
+    {
+      "id": 10,
+      "target": "hour",
+      "text": "온전한 휴식이 주어졌을 때, 에너지를 채우는 방식은?",
+      "options": [
+        { "label": "밖으로 나가 바람을 쐬거나 사람들을 만난다", "value": 0, "impact": { "fire": 2, "wood": 1, "yang": 2, "action": 2, "receptivity": -1 } },
+        { "label": "집에서 절대 나가지 않고 가만히 누워 쉰다", "value": 1, "impact": { "water": 2, "metal": 1, "yin": 2, "receptivity": 2, "action": -1 } }
+      ]
+    },
+    {
+      "id": 11,
+      "target": "hour",
+      "text": "하루를 마무리할 때 당신의 기분에 더 가까운 것은?",
+      "options": [
+        { "label": "'오늘 하루도 열심히 잘 살았다'는 뿌듯함", "value": 0, "impact": { "wood": 2, "fire": 1, "yang": 1, "action": 1 } },
+        { "label": "'드디어 끝났다, 이제 쉴 수 있다'는 안도감", "value": 1, "impact": { "water": 2, "earth": 1, "yin": 1, "receptivity": 1 } }
+      ]
+    },
+    {
+      "id": 12,
+      "target": "hour",
+      "text": "먼 훗날, 당신이 꿈꾸는 완벽한 노후의 모습은?",
+      "options": [
+        { "label": "사회의 한구석에서 계속 역할을 하며 바쁘게 사는 삶", "value": 0, "impact": { "wood": 1, "fire": 2, "yang": 2, "action": 2, "receptivity": -1 } },
+        { "label": "모든 걸 내려놓고 조용한 곳에서 평화롭게 머무는 삶", "value": 1, "impact": { "metal": 1, "water": 2, "yin": 2, "receptivity": 2, "action": -1 } }
+      ]
+    },
+    {
+      "id": 13,
+      "target": "day",
+      "text": "의견이 엇갈려 결정을 내려야 하는 순간, 당신이 더 중요하게 생각하는 것은?",
+      "options": [
+        { "label": "감정이 조금 상하더라도 논리적으로 옳은 결론을 내는 것", "value": 0, "impact": { "metal": 2, "wood": -1, "yang": 1, "action": 2, "receptivity": -1 } },
+        { "label": "조금 돌아가더라도 모두가 납득할 수 있는 분위기를 만드는 것", "value": 1, "impact": { "earth": 1, "water": 1, "fire": -1, "yin": 1, "receptivity": 2, "action": -1 } }
+      ]
+    },
+    {
+      "id": 14,
+      "target": "day",
+      "text": "스트레스가 극에 달했을 때 본능적으로 취하는 행동은?",
+      "options": [
+        { "label": "맛있는 것을 먹거나, 땀을 흘리거나, 누군가와 대화하며 푼다", "value": 0, "impact": { "fire": 2, "wood": 1, "yang": 2, "action": 2 } },
+        { "label": "아무와도 연락하지 않고 나만의 동굴로 깊이 숨어버린다", "value": 1, "impact": { "water": 2, "metal": 1, "yin": 2, "receptivity": 2 } }
+      ]
+    },
+    {
+      "id": 15,
+      "target": "day",
+      "text": "갑자기 생각지 못한 여윳돈이 생겼다면 어떻게 하시겠습니까?",
+      "options": [
+        { "label": "평소 갖고 싶었던 것을 사거나 주변에 기분 좋게 쓴다", "value": 0, "impact": { "fire": 1, "wood": 1, "metal": -1, "yang": 1, "action": 2 } },
+        { "label": "만약을 대비해 안전한 곳에 모아둔다", "value": 1, "impact": { "earth": 2, "metal": 1, "wood": -1, "yin": 1, "receptivity": 2 } }
+      ]
+    },
+    {
+      "id": 16,
+      "target": "day",
+      "text": "당신이 인간관계에서 절대 참기 힘든 사람은?",
+      "options": [
+        { "label": "예의를 지키지 않고 함부로 선을 넘는 사람", "value": 0, "impact": { "fire": 2, "wood": 1, "yang": 1, "action": 1 } },
+        { "label": "답답하게 일을 처리해서 남에게 피해를 주는 사람", "value": 1, "impact": { "metal": 2, "water": 1, "yin": 1, "action": 2 } }
+      ]
+    },
+    {
+      "id": 17,
+      "target": "day",
+      "text": "무언가를 새로 시작할 때 당신의 방식은?",
+      "options": [
+        { "label": "설명서나 기존의 방식을 꼼꼼히 따르며 안정적으로 한다", "value": 0, "impact": { "earth": 2, "metal": 1, "yin": 1, "receptivity": 2, "action": -1 } },
+        { "label": "일단 직접 부딪혀보면서 나만의 방식을 찾는다", "value": 1, "impact": { "wood": 2, "fire": 1, "yang": 2, "action": 2, "receptivity": -1 } }
+      ]
+    },
+    {
+      "id": 18,
+      "target": "day",
+      "text": "둘 중 하나로 불려야 한다면, 당신이 더 듣고 싶은 평가는?",
+      "options": [
+        { "label": "'당신은 참 믿음직하고 든든한 사람입니다.'", "value": 0, "impact": { "earth": 2, "metal": 1, "yin": 1, "receptivity": 2 } },
+        { "label": "'당신은 참 감각 있고 능력이 뛰어난 사람입니다.'", "value": 1, "impact": { "water": 1, "fire": 2, "yang": 1, "action": 1 } }
+      ]
+    },
+    {
+      "id": 19,
+      "target": "year",
+      "text": "여럿이 모인 대화 자리에서 당신의 보통 포지션은?",
+      "options": [
+        { "label": "대화 주제를 꺼내고 분위기를 이끌어가는 편", "value": 0, "impact": { "fire": 2, "wood": 1, "yang": 2, "action": 2, "receptivity": -1 } },
+        { "label": "주로 다른 사람의 이야기를 들어주고 맞춰주는 편", "value": 1, "impact": { "water": 2, "earth": 1, "yin": 2, "receptivity": 2, "action": -1 } }
+      ]
+    },
+    {
+      "id": 20,
+      "target": "year",
+      "text": "중요한 가족 행사나 모임을 준비할 때 당신의 스타일은?",
+      "options": [
+        { "label": "미리 일정과 예산을 철저하게 계획해 두어야 마음이 편하다", "value": 0, "impact": { "metal": 2, "earth": 1, "yin": 1, "receptivity": 2 } },
+        { "label": "큰 틀만 정해두고 상황에 맞게 유연하게 대처하는 게 좋다", "value": 1, "impact": { "wood": 2, "fire": 1, "yang": 1, "action": 2 } }
+      ]
+    },
+    {
+      "id": 21,
+      "target": "year",
+      "text": "집단을 이끄는 리더가 되었을 때, 당신이 더 중요하게 생각하는 것은?",
+      "options": [
+        { "label": "공정한 원칙과 체계를 세워 흔들림 없이 이끄는 것", "value": 0, "impact": { "metal": 2, "earth": 1, "yin": 1, "receptivity": 2, "action": 0 } },
+        { "label": "사람들의 마음을 하나로 모으고 유연하게 소통하는 것", "value": 1, "impact": { "water": 2, "wood": 1, "yang": 1, "action": 1, "receptivity": 1 } }
+      ]
+    },
+    {
+      "id": 22,
+      "target": "year",
+      "text": "처음 보는 사람들이 당신의 첫인상에 대해 자주 하는 말은?",
+      "options": [
+        { "label": "'처음엔 조금 다가가기 어렵고 차분해 보였어'", "value": 0, "impact": { "metal": 1, "water": 2, "yin": 2, "receptivity": 1 } },
+        { "label": "'처음부터 친근하고 편안한 인상이었어'", "value": 1, "impact": { "wood": 1, "fire": 2, "yang": 2, "action": 1 } }
+      ]
+    },
+    {
+      "id": 23,
+      "target": "year",
+      "text": "둘 중 하나를 선택해야 하는 기로에 놓였다면?",
+      "options": [
+        { "label": "큰 보상이 따르지만 위험과 변화가 많은 삶", "value": 0, "impact": { "fire": 2, "wood": 1, "earth": -1, "yang": 2, "action": 2, "receptivity": -1 } },
+        { "label": "큰 변화는 없지만 평온하고 안정적인 삶", "value": 1, "impact": { "earth": 2, "metal": 1, "fire": -1, "yin": 2, "receptivity": 2, "action": -1 } }
+      ]
+    },
+    {
+      "id": 24,
+      "target": "year",
+      "text": "당신이 살아오면서 더 크게 발휘해 온 능력은 무엇인가요?",
+      "options": [
+        { "label": "내게 주어진 환경을 지켜내고 묵묵히 견디는 인내심", "value": 0, "impact": { "earth": 2, "water": 1, "wood": -1, "yin": 2, "receptivity": 2, "action": -1 } },
+        { "label": "새로운 길을 개척하고 판을 바꾸려는 돌파력", "value": 1, "impact": { "wood": 2, "metal": 1, "earth": -1, "yang": 2, "action": 2, "receptivity": -1 } }
+      ]
+    }
+  ]
+}

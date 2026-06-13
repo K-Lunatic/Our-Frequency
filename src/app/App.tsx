@@ -4,7 +4,6 @@ import Test from "@/pages/Test";
 import Result from "@/pages/Result";
 import Synergy from "@/pages/Synergy";
 import RealSaju from "@/pages/RealSaju";
-import Sync from "@/pages/Sync";
 
 export default function App() {
   return (
@@ -24,7 +23,6 @@ export default function App() {
           <Route path="/result" element={<Result />} />
           <Route path="/synergy" element={<Synergy />} />
           <Route path="/realsaju" element={<RealSaju />} />
-          <Route path="/sync" element={<Sync />} />
         </Route>
       </Routes>
     </BrowserRouter>

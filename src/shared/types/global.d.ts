@@ -13,7 +13,6 @@ declare global {
 
   interface Option {
     label: string; 
-    // 🚀 수정: value가 number 뿐만 아니라 string이나 배열도 가능하도록 확장
     value: number | string | number[]; 
     impact?: { 
       [key in ElementType | 'yin' | 'yang' | 'action' | 'receptivity']?: number; 
@@ -77,7 +76,7 @@ declare global {
   }
 
   interface SajuAnalysis {
-    pillars: string[]; // ['甲子', '乙丑', ...]
+    pillars: string[];
     analytics: SajuAnalytics;
   }
 
@@ -89,7 +88,6 @@ declare global {
     detail: string;
   }
 
-  // 6. [DB 규격] 통변 엔진용 마스터 데이터셋
   interface MatrixAdvanced {
     "0_ten_gods": Record<string, { keyword: string; desc: string }>;
     "0_special_stars": Record<string, { keyword: string; desc: string }>;
